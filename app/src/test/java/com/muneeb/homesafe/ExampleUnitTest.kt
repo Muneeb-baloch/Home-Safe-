@@ -1,4 +1,4 @@
-package com.muneeb.homesaffe
+package com.muneeb.homesafe
 
 import org.junit.Test
 

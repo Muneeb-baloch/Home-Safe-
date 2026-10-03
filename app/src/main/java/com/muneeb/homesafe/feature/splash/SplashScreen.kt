@@ -1,4 +1,4 @@
-package com.muneeb.homesaffe.feature.splash
+package com.muneeb.homesafe.feature.splash
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -19,8 +19,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.muneeb.homesaffe.R
-import com.muneeb.homesaffe.core.designsystem.theme.HomeSafeTheme
+import com.muneeb.homesafe.R
+import com.muneeb.homesafe.core.designsystem.theme.HomeSafeTheme
 
 @Composable
 fun SplashContent(

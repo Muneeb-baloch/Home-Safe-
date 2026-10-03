@@ -1,4 +1,4 @@
-package com.muneeb.homesaffe.feature.auth.login
+package com.muneeb.homesafe.feature.auth.login
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue

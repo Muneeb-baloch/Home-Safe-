@@ -1,4 +1,4 @@
-package com.muneeb.homesaffe.core.designsystem.theme
+package com.muneeb.homesafe.core.designsystem.theme
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.lightColorScheme

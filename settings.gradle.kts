@@ -22,5 +22,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Home Saffe"
+rootProject.name = "Home Safe"
 include(":app")

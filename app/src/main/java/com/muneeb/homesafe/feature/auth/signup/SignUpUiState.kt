@@ -1,4 +1,4 @@
-package com.muneeb.homesaffe.feature.auth.signup
+package com.muneeb.homesafe.feature.auth.signup
 
 data class SignUpUiState(
     val fullName: String = "",

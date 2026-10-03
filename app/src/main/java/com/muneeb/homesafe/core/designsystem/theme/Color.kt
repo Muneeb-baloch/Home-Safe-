@@ -1,4 +1,4 @@
-package com.muneeb.homesaffe.core.designsystem.theme
+package com.muneeb.homesafe.core.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 

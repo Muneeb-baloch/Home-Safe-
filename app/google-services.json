@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "678947546365",
+    "project_id": "homesafef-81ebd",
+    "storage_bucket": "homesafef-81ebd.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:678947546365:android:5ab44ad983ca2cabfa0a94",
+        "android_client_info": {
+          "package_name": "com.muneeb.homesafe"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALDfF5HseYLzhCMrLYnMluSa8MA3jJxAo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
