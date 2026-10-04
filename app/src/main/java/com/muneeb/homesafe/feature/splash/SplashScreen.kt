@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.muneeb.homesafe.R
 import com.muneeb.homesafe.core.designsystem.theme.HomeSafeTheme
-
 @Composable
 fun SplashContent(
     modifier: Modifier = Modifier
@@ -49,8 +48,7 @@ fun SplashContent(
                 text = "HomeSafe",
                 color = MaterialTheme.colorScheme.onPrimary,
                 fontSize = 32.sp,
-                fontWeight = FontWeight.Bold,
-                letterSpacing = (-0.5).sp
+                fontWeight = FontWeight.Bold
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -58,8 +56,7 @@ fun SplashContent(
             Text(
                 text = "Know they’re home.",
                 color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.85f),
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Normal
+                fontSize = 16.sp
             )
         }
     }
