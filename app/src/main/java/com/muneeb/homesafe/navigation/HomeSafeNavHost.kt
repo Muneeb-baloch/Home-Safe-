@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.muneeb.homesafe.feature.home.HomeScreen
 
 @Composable
 fun HomeSafeNavHost(
@@ -21,8 +22,7 @@ fun HomeSafeNavHost(
         modifier = modifier
     ) {
         composable(TopLevelDestination.HOME.route) {
-            // Replace with actual HomeScreen()
-            ScreenPlaceholder("Home Screen")
+            HomeScreen()
         }
         composable(TopLevelDestination.JOURNEYS.route) {
             // Replace with actual JourneysScreen()

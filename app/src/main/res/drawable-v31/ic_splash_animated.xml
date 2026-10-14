@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- HomeSafe "Pin Drop" animated splash icon (API 31+). Total 1000ms.
+     0–450ms   pin falls in from above the visible circle
+     450–700ms pin squashes on landing and settles
+     0–450ms   shadow grows under it
+     480–980ms pale-teal ripple spreads out from the landing spot
+     600–800ms door in the amber house lights up white
+     Canvas 288dp; everything rests inside the 192dp safe circle. -->
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt">
+
+    <aapt:attr name="android:drawable">
+        <vector
+            android:width="288dp"
+            android:height="288dp"
+            android:viewportWidth="288"
+            android:viewportHeight="288">
+
+            <!-- Ripple ring -->
+            <group android:name="ripple_group" android:pivotX="144" android:pivotY="204"
+                android:scaleX="0.4" android:scaleY="0.4">
+                <path android:name="ripple"
+                    android:pathData="M118,204 A26,7 0 1,0 170,204 A26,7 0 1,0 118,204 Z"
+                    android:strokeColor="@color/homesafe_pale_teal"
+                    android:strokeWidth="3"
+                    android:strokeAlpha="0" />
+            </group>
+
+            <!-- Ground shadow -->
+            <group android:name="shadow_group" android:pivotX="144" android:pivotY="204"
+                android:scaleX="0.3" android:scaleY="0.3">
+                <path android:name="shadow"
+                    android:pathData="M122,204 A22,6 0 1,0 166,204 A22,6 0 1,0 122,204 Z"
+                    android:fillColor="@color/homesafe_dark_teal"
+                    android:fillAlpha="0" />
+            </group>
+
+            <!-- Pin: starts above the visible area -->
+            <group android:name="pin_drop" android:translateY="-170">
+                <group android:name="pin_squash" android:pivotX="144" android:pivotY="198">
+                    <path android:name="pin"
+                        android:pathData="M144,198 C132,184 94,152 94,120 A50,50 0 1,1 194,120 C194,152 156,184 144,198 Z"
+                        android:fillColor="@color/homesafe_white" />
+                    <path android:name="house"
+                        android:pathData="M144,98 L168,118 L168,142 L120,142 L120,118 Z"
+                        android:fillColor="@color/homesafe_warm_light"
+                        android:strokeColor="@color/homesafe_warm_light"
+                        android:strokeWidth="6"
+                        android:strokeLineJoin="round" />
+                    <path android:name="door"
+                        android:pathData="M141,128 L147,128 Q150,128 150,131 L150,145 L138,145 L138,131 Q138,128 141,128 Z"
+                        android:fillColor="@color/homesafe_warm_light" />
+                </group>
+            </group>
+        </vector>
+    </aapt:attr>
+
+    <!-- Fall -->
+    <target android:name="pin_drop">
+        <aapt:attr name="android:animation">
+            <objectAnimator android:propertyName="translateY"
+                android:valueFrom="-170" android:valueTo="0"
+                android:duration="450"
+                android:interpolator="@android:interpolator/accelerate_quad" />
+        </aapt:attr>
+    </target>
+
+    <!-- Squash and settle -->
+    <target android:name="pin_squash">
+        <aapt:attr name="android:animation">
+            <set android:ordering="together">
+                <objectAnimator android:propertyName="scaleX" android:valueFrom="1" android:valueTo="1.08"
+                    android:startOffset="450" android:duration="100"
+                    android:interpolator="@android:interpolator/decelerate_quad" />
+                <objectAnimator android:propertyName="scaleY" android:valueFrom="1" android:valueTo="0.9"
+                    android:startOffset="450" android:duration="100"
+                    android:interpolator="@android:interpolator/decelerate_quad" />
+                <objectAnimator android:propertyName="scaleX" android:valueFrom="1.08" android:valueTo="1"
+                    android:startOffset="550" android:duration="150"
+                    android:interpolator="@android:interpolator/fast_out_slow_in" />
+                <objectAnimator android:propertyName="scaleY" android:valueFrom="0.9" android:valueTo="1"
+                    android:startOffset="550" android:duration="150"
+                    android:interpolator="@android:interpolator/fast_out_slow_in" />
+            </set>
+        </aapt:attr>
+    </target>
+
+    <!-- Shadow grows as the pin approaches -->
+    <target android:name="shadow_group">
+        <aapt:attr name="android:animation">
+            <set android:ordering="together">
+                <objectAnimator android:propertyName="scaleX" android:valueFrom="0.3" android:valueTo="1"
+                    android:duration="450" android:interpolator="@android:interpolator/accelerate_quad" />
+                <objectAnimator android:propertyName="scaleY" android:valueFrom="0.3" android:valueTo="1"
+                    android:duration="450" android:interpolator="@android:interpolator/accelerate_quad" />
+            </set>
+        </aapt:attr>
+    </target>
+    <target android:name="shadow">
+        <aapt:attr name="android:animation">
+            <objectAnimator android:propertyName="fillAlpha" android:valueFrom="0" android:valueTo="1"
+                android:duration="450" android:interpolator="@android:interpolator/accelerate_quad" />
+        </aapt:attr>
+    </target>
+
+    <!-- Ripple on landing -->
+    <target android:name="ripple_group">
+        <aapt:attr name="android:animation">
+            <set android:ordering="together">
+                <objectAnimator android:propertyName="scaleX" android:valueFrom="0.4" android:valueTo="2.4"
+                    android:startOffset="480" android:duration="500"
+                    android:interpolator="@android:interpolator/decelerate_cubic" />
+                <objectAnimator android:propertyName="scaleY" android:valueFrom="0.4" android:valueTo="2.4"
+                    android:startOffset="480" android:duration="500"
+                    android:interpolator="@android:interpolator/decelerate_cubic" />
+            </set>
+        </aapt:attr>
+    </target>
+    <target android:name="ripple">
+        <aapt:attr name="android:animation">
+            <set android:ordering="sequentially">
+                <objectAnimator android:propertyName="strokeAlpha" android:valueFrom="0" android:valueTo="0.9"
+                    android:startOffset="480" android:duration="1" />
+                <objectAnimator android:propertyName="strokeAlpha" android:valueFrom="0.9" android:valueTo="0"
+                    android:duration="499"
+                    android:interpolator="@android:interpolator/decelerate_cubic" />
+            </set>
+        </aapt:attr>
+    </target>
+
+    <!-- Door lights up -->
+    <target android:name="door">
+        <aapt:attr name="android:animation">
+            <objectAnimator android:propertyName="fillColor"
+                android:valueType="colorType"
+                android:valueFrom="@color/homesafe_warm_light" android:valueTo="@color/homesafe_white"
+                android:startOffset="600" android:duration="200"
+                android:interpolator="@android:interpolator/decelerate_quad" />
+        </aapt:attr>
+    </target>
+</animated-vector>

@@ -1,0 +1,124 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HomeSafe Pin Drop</title>
+<style>
+:root{--bg:#176B5B;--amber:#B7791F;--green:#4ADE80}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:#0b0b0c;font-family:system-ui,sans-serif;color:#e8e8e8;padding:24px 16px}
+h1{font-size:18px;font-weight:600;text-align:center;margin:0 0 4px}
+.sub{text-align:center;color:#8a8a8a;font-size:13px;margin:0 0 22px}
+.grid{display:flex;gap:22px;justify-content:center;flex-wrap:wrap}
+.card{display:flex;flex-direction:column;align-items:center;gap:10px;width:220px}
+.phone{width:220px;height:440px;border-radius:30px;background:var(--bg);border:5px solid #222;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.safe{position:absolute;width:147px;height:147px;border-radius:50%;border:1px dashed rgba(255,255,255,.2);display:none}
+.show-safe .safe{display:block}
+svg{width:220px;height:220px;overflow:visible}
+.name{font-weight:600;font-size:15px}
+.desc{font-size:12.5px;color:#9a9a9a;text-align:center;line-height:1.45;min-height:54px}
+.bar{display:flex;gap:10px;justify-content:center;margin-top:22px;flex-wrap:wrap}
+button,label{background:#1f1f22;color:#eee;border:1px solid #3a3a3e;border-radius:8px;padding:8px 14px;font-size:14px;cursor:pointer;font-family:inherit}
+.card button{padding:6px 12px;font-size:13px}
+
+/* ---------- A: Lights On ---------- */
+.a .house{transform-origin:144px 198px;opacity:0}
+.a .light{fill:var(--bg)}
+.a .glow{transform-origin:144px 150px;opacity:0}
+.play.a .house{animation:popUp .5s cubic-bezier(.34,1.56,.64,1) forwards}
+.play.a .light{animation:lightOn .22s ease-out .45s forwards}
+.play.a .glow{animation:glow .45s cubic-bezier(.4,0,.2,1) .55s forwards}
+@keyframes popUp{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:scale(1)}}
+@keyframes lightOn{to{fill:var(--amber)}}
+@keyframes glow{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:scale(1)}}
+
+/* ---------- B: Journey Home ---------- */
+.b .route{stroke-dasharray:110;stroke-dashoffset:110}
+.b .house{opacity:.22;transform-origin:162px 160px}
+.b .check{stroke-dasharray:50;stroke-dashoffset:50}
+.play.b .route{animation:draw .45s cubic-bezier(.4,0,.2,1) forwards}
+.play.b .house{animation:arrive .4s cubic-bezier(.4,0,.2,1) .42s forwards}
+.play.b .check{animation:draw .25s cubic-bezier(.4,0,.2,1) .65s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes arrive{0%{opacity:.22;transform:scale(1)}50%{opacity:1;transform:scale(1.07)}100%{opacity:1;transform:scale(1)}}
+
+/* ---------- C: Pin Drop ---------- */
+.c .pin{transform-origin:144px 198px;opacity:0}
+.c .shadow{transform-origin:144px 204px;opacity:0}
+.c .ripple{transform-origin:144px 204px;opacity:0}
+.c .door{fill:#B7791F}
+.c svg{clip-path:circle(33.4% at 50% 50%)}
+.play.c .pin{animation:drop .7s forwards}
+.play.c .shadow{animation:shadow .45s cubic-bezier(.55,0,1,.45) forwards}
+.play.c .ripple{animation:ripple .5s cubic-bezier(.2,0,.2,1) .48s forwards}
+.play.c .door{animation:doorOn .2s ease-out .6s forwards}
+@keyframes drop{
+  0%{opacity:0;transform:translateY(-130px) scale(1,1);animation-timing-function:cubic-bezier(.55,0,1,.45)}
+  15%{opacity:1}
+  64%{transform:translateY(0) scale(1,1);animation-timing-function:ease-out}
+  78%{transform:translateY(0) scale(1.08,.9);animation-timing-function:ease-in-out}
+  100%{opacity:1;transform:translateY(0) scale(1,1)}}
+@keyframes shadow{from{opacity:0;transform:scale(.3)}to{opacity:1;transform:scale(1)}}
+@keyframes ripple{from{opacity:.9;transform:scale(.4)}to{opacity:0;transform:scale(2.4)}}
+@keyframes doorOn{to{fill:#FFFFFF}}
+.grid .card:nth-child(-n+2){display:none}
+</style></head><body>
+<h1>HomeSafe splash — Pin Drop</h1>
+<p class="sub">In your app colors: DeepTeal, PureWhite, DarkTeal, PaleTeal, WarningAmber. Clipped to the circle Android actually shows.</p>
+
+<div class="grid">
+ <div class="card">
+  <div class="phone a" id="pa"><div class="safe"></div>
+   <svg viewBox="0 0 288 288">
+    <defs><radialGradient id="g"><stop offset="0" stop-color="#FFC94D" stop-opacity=".55"/><stop offset="1" stop-color="#FFC94D" stop-opacity="0"/></radialGradient></defs>
+    <circle class="glow" cx="144" cy="150" r="92" fill="url(#g)"/>
+    <g class="house">
+     <path d="M144,88 L200,134 L200,198 L88,198 L88,134 Z" fill="#fff" stroke="#fff" stroke-width="14" stroke-linejoin="round"/>
+     <circle class="light" cx="144" cy="130" r="10"/>
+     <rect class="light" x="128" y="160" width="32" height="38" rx="6"/>
+    </g>
+   </svg></div>
+  <div class="name">A · Lights On</div>
+  <div class="desc">A solid house pops up, then its window and door light up warm: someone's home.</div>
+  <button onclick="play('pa')">Replay</button>
+ </div>
+
+ <div class="card">
+  <div class="phone b" id="pb"><div class="safe"></div>
+   <svg viewBox="0 0 288 288">
+    <path class="route" d="M60,166 C84,166 92,196 116,196 L128,196" fill="none" stroke="#FFC94D" stroke-width="9" stroke-linecap="round"/>
+    <g class="house">
+     <path d="M118,132 L162,94 L206,132 M196,124 L196,196 L128,196 L128,124" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+     <path class="check" d="M146,166 L158,178 L180,154" fill="none" stroke="#4ADE80" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+   </svg></div>
+  <div class="name">B · Journey Home</div>
+  <div class="desc">A route travels to a faded house; it fills in as you arrive, and a check appears.</div>
+  <button onclick="play('pb')">Replay</button>
+ </div>
+
+ <div class="card">
+  <div class="phone c" id="pc"><div class="safe"></div>
+   <svg viewBox="0 0 288 288">
+    <ellipse class="ripple" cx="144" cy="204" rx="26" ry="7" fill="none" stroke="#E8F4F1" stroke-width="3"/>
+    <ellipse class="shadow" cx="144" cy="204" rx="22" ry="6" fill="#0F5145"/>
+    <g class="pin">
+     <path d="M144,198 C132,184 94,152 94,120 A50,50 0 1 1 194,120 C194,152 156,184 144,198 Z" fill="#fff"/>
+     <path d="M144,98 L168,118 L168,142 L120,142 L120,118 Z" fill="#B7791F" stroke="#B7791F" stroke-width="6" stroke-linejoin="round"/>
+     <rect class="door" x="138" y="128" width="12" height="17" rx="3"/>
+    </g>
+   </svg></div>
+  <div class="name">C · Pin Drop</div>
+  <div class="desc">A location pin with a house inside drops onto the map and lands with a ripple; the door lights up.</div>
+  <button onclick="play('pc')">Replay</button>
+ </div>
+</div>
+
+<div class="bar">
+ <button onclick="['pa','pb','pc'].forEach(play)">Replay all</button>
+ <label><input type="checkbox" onchange="document.querySelectorAll('.phone').forEach(p=>p.classList.toggle('show-safe',this.checked))"> Show safe circle</label>
+ <label>Background <input type="color" value="#176B5B" oninput="document.documentElement.style.setProperty('--bg',this.value)"></label>
+</div>
+<script>
+function play(id){const p=document.getElementById(id);p.classList.remove('play');void p.offsetWidth;p.classList.add('play')}
+setTimeout(()=>['pa','pb','pc'].forEach(play),300);
+</script>
+</body></html>

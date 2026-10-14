@@ -14,7 +14,13 @@ fun HomeScreen(
 
     HomeContent(
         uiState = uiState,
-        onStartJourneyClick = { /* Navigate or start journey action */ },
+        onStartJourneyClick = { /* Navigate to start-an-outing flow */ },
+        onScanQrClick = { /* Navigate to QR scanner */ },
+        onEnterCodeClick = { /* Navigate to enter-code flow */ },
+        onChangeHomeLocationClick = { /* Navigate to home location picker */ },
+        onViewAllJourneysClick = { /* Navigate to journeys list */ },
+        onNotificationsClick = { /* Navigate to alerts */ },
+        onProfileClick = { /* Navigate to profile */ },
         modifier = modifier
     )
 }

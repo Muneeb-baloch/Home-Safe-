@@ -14,17 +14,36 @@ import com.muneeb.homesafe.core.designsystem.theme.HomeSafeTheme
 import com.muneeb.homesafe.feature.splash.SplashContent
 import com.muneeb.homesafe.navigation.MainScreen
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        installSplashScreen()
+        val splash = installSplashScreen()
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
+        splash.setOnExitAnimationListener { provider ->
+            provider.view.animate().alpha(0f).setDuration(250)
+                .withEndAction { provider.remove() }.start()
+        }
+
         setContent {
             HomeSafeTheme {
-                MainScreen()
+                var showSplash by remember { mutableStateOf(true) }
+
+                LaunchedEffect(Unit) {
+                    val minSplash = launch { delay(700) }
+                    // future: val session = sessionRepo.load()
+                    minSplash.join()
+                    showSplash = false
+                }
+
+                if (showSplash) {
+                    SplashContent()
+                } else {
+                    MainScreen()
+                }
             }
         }
     }

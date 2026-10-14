@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- HomeSafe splash palette, matching core/designsystem/theme/Color.kt -->
+    <color name="homesafe_deep_teal">#176B5B</color>    <!-- DeepTeal: splash background -->
+    <color name="homesafe_dark_teal">#0F5145</color>    <!-- DarkTeal: ground shadow -->
+    <color name="homesafe_pale_teal">#E8F4F1</color>    <!-- PaleTeal: landing ripple -->
+    <color name="homesafe_white">#FFFFFF</color>        <!-- PureWhite: pin + door "lights on" -->
+    <color name="homesafe_warm_light">#B7791F</color>   <!-- WarningAmber: house inside the pin -->
+</resources>
