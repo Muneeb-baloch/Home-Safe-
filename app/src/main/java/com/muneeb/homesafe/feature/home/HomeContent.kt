@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -21,7 +22,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -87,6 +89,7 @@ fun HomeContent(
         modifier = modifier
             .fillMaxSize()
             .background(PureWhite)
+            .windowInsetsPadding(WindowInsets.statusBars)
     ) {
         HomeTopBar(
             uiState = uiState,
@@ -246,7 +249,6 @@ private fun HomeTopBar(
         modifier = modifier
             .fillMaxWidth()
             .background(PureWhite)
-            .statusBarsPadding()
             .padding(start = 20.dp, end = 20.dp, top = 16.dp, bottom = 10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -350,7 +352,6 @@ private fun HomeHeroCard(
     ) {
         val cardWidth = maxWidth
 
-        // ring-lg: left 238/350, top -34, size 150
         Box(
             modifier = Modifier
                 .offset(x = cardWidth * (238f / 350f), y = (-34).dp)
@@ -358,7 +359,6 @@ private fun HomeHeroCard(
                 .border(1.5.dp, PureWhite.copy(alpha = 0.14f), CircleShape)
         )
 
-        // ring-sm: left 272/350, top 6, size 74, dashed
         Canvas(
             modifier = Modifier
                 .offset(x = cardWidth * (272f / 350f), y = 6.dp)
@@ -374,7 +374,6 @@ private fun HomeHeroCard(
             )
         }
 
-        // hero-home icon: left 296/350, top 30, size 26
         Icon(
             painter = painterResource(id = R.drawable.ic_home_stroke),
             contentDescription = null,
@@ -484,14 +483,12 @@ private fun HomeLocationMap(
 
             val dashEffect = PathEffect.dashPathEffect(floatArrayOf(5f, 5f))
 
-            // .geo: 80dp circle, centered horizontally, top offset 4dp
             drawCircle(
                 color = DeepTeal.copy(alpha = 0.45f),
                 radius = 40.dp.toPx(),
                 center = Offset(w / 2f, 4.dp.toPx() + 40.dp.toPx()),
                 style = Stroke(width = 1.5.dp.toPx(), pathEffect = dashEffect)
             )
-            // .geo-inner: 56dp circle, centered horizontally, top offset 16dp
             drawCircle(
                 color = DeepTeal.copy(alpha = 0.25f),
                 radius = 28.dp.toPx(),
@@ -500,7 +497,6 @@ private fun HomeLocationMap(
             )
         }
 
-        // marker: 30dp circle, centered horizontally, top offset 29dp
         Box(
             modifier = Modifier
                 .align(Alignment.TopCenter)

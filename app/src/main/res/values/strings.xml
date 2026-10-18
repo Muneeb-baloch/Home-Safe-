@@ -1,3 +1,62 @@
 <resources>
     <string name="app_name">Home Safe</string>
+
+    <!-- Shared -->
+    <string name="cd_back">Back</string>
+    <string name="setup_step_format">Step %1$d of %2$d</string>
+
+    <!-- Setup · Location access -->
+    <string name="setup_location_heading">Let HomeSafe know when you\'re home</string>
+    <string name="setup_location_lead">We only use your location to detect when you enter your home zone. It\'s never shared live with anyone.</string>
+    <string name="setup_feature_arrival_only_title">Arrival only</string>
+    <string name="setup_feature_arrival_only_subtitle">Friends see “Home” — never your route.</string>
+    <string name="setup_feature_background_title">Works in the background</string>
+    <string name="setup_feature_background_subtitle">No need to open the app when you get home.</string>
+    <string name="setup_feature_battery_title">Battery-friendly</string>
+    <string name="setup_feature_battery_subtitle">A geofence around home, not constant GPS.</string>
+    <string name="setup_allow_location_button">Allow location access</string>
+    <string name="setup_location_footnote">You can change this anytime in Settings.</string>
+
+    <!-- Setup · Background location -->
+    <string name="setup_background_heading">Choose “Allow all the time”</string>
+    <string name="setup_background_lead">Android asks for background location separately. Without it, HomeSafe can\'t detect your arrival while the app is closed.</string>
+    <string name="setup_background_permission_label">LOCATION PERMISSION FOR HOMESAFE</string>
+    <string name="setup_option_allow_always">Allow all the time</string>
+    <string name="setup_option_required">Required</string>
+    <string name="setup_option_allow_foreground">Allow only while using the app</string>
+    <string name="setup_option_ask_every_time">Ask every time</string>
+    <string name="setup_option_dont_allow">Don\'t allow</string>
+    <string name="setup_background_hint">In Settings, tap Permissions → Location → Allow all the time, then come back.</string>
+    <string name="setup_open_settings_button">Open settings</string>
+    <string name="setup_not_now_button">Not now</string>
+
+    <!-- Setup · Notifications -->
+    <string name="setup_notif_sample_name_1">Ahmed reached home safely</string>
+    <string name="setup_notif_sample_meta_1">Friday Night Out · 11:42 PM</string>
+    <string name="setup_notif_sample_name_2">Ali reached home safely</string>
+    <string name="setup_notif_sample_meta_2">Friday Night Out · 11:58 PM</string>
+    <string name="setup_notif_now">now</string>
+    <string name="setup_notifications_heading">Know when your friends get home</string>
+    <string name="setup_notifications_lead">We\'ll tell you when companions arrive — and confirm when your own arrival has been shared.</string>
+    <string name="setup_feature_arrival_alerts_title">Arrival alerts</string>
+    <string name="setup_feature_arrival_alerts_subtitle">When someone from your outing gets home.</string>
+    <string name="setup_feature_outing_invites_title">Outing invites</string>
+    <string name="setup_feature_outing_invites_subtitle">When a friend adds you to an outing.</string>
+    <string name="setup_turn_on_notifications_button">Turn on notifications</string>
+    <string name="setup_maybe_later_button">Maybe later</string>
+
+    <!-- Setup · Set home location -->
+    <string name="setup_home_title">Set your home</string>
+    <string name="setup_search_address_hint">Search for an address</string>
+    <string name="setup_map_drag_hint">Drag the map to adjust the pin</string>
+    <string name="cd_use_current_location">Use current location</string>
+    <string name="setup_home_label">Home</string>
+    <string name="setup_home_address_sample">Block 4, Gulshan-e-Iqbal, Karachi</string>
+    <string name="setup_edit">Edit</string>
+    <string name="setup_arrival_zone_label">Arrival zone</string>
+    <string name="setup_radius_100">100 m</string>
+    <string name="setup_radius_150">150 m</string>
+    <string name="setup_radius_250">250 m</string>
+    <string name="setup_radius_hint">Bigger detects arrival sooner; smaller is more precise.</string>
+    <string name="setup_save_as_home_button">Save as Home</string>
 </resources>

@@ -27,20 +27,15 @@ fun HomeSafeNavHost(
             HomeScreen()
         }
         composable(TopLevelDestination.JOURNEYS.route) {
-            // Replace with actual JourneysScreen()
             ScreenPlaceholder("Journeys Screen")
         }
         composable(TopLevelDestination.COMPANIONS.route) {
-            // Replace with actual CompanionsScreen()
             ScreenPlaceholder("Companions Screen")
         }
         composable(TopLevelDestination.PROFILE.route) {
-            // Replace with actual ProfileScreen()
             ScreenPlaceholder("Profile Screen")
         }
         composable(ALERTS_ROUTE) {
-            // Reached from the notification bell in the header, not the bottom nav.
-            // Replace with actual AlertsScreen()
             ScreenPlaceholder("Alerts Screen")
         }
     }

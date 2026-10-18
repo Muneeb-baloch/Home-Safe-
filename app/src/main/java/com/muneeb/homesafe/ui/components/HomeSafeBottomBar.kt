@@ -76,7 +76,7 @@ fun HomeSafeBottomBar(
                         selectedTextColor = DeepTeal,
                         unselectedIconColor = Faint,
                         unselectedTextColor = Faint,
-                        indicatorColor = Color.Transparent // Removes oval pill background
+                        indicatorColor = Color.Transparent
                     )
                 )
             }
