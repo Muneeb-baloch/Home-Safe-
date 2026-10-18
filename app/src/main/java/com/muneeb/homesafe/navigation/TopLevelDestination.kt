@@ -10,18 +10,18 @@ enum class TopLevelDestination(
 ) {
     HOME(
         route = "home",
-        iconRes = R.drawable.ic_home_icon,
+        iconRes = R.drawable.ic_home_stroke,
         title = "Home"
     ),
     JOURNEYS(
         route = "journeys",
-        iconRes = R.drawable.ic_journey_icon,
+        iconRes = R.drawable.ic_route_stroke,
         title = "Journeys"
     ),
-    ALERTS(
-        route = "alerts",
-        iconRes = R.drawable.ic_notification_icon,
-        title = "Alerts"
+    COMPANIONS(
+        route = "companions",
+        iconRes = R.drawable.ic_companions_stroke,
+        title = "Companions"
     ),
     PROFILE(
         route = "profile",

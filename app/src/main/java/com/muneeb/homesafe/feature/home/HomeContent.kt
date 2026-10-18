@@ -3,10 +3,13 @@ package com.muneeb.homesafe.feature.home
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +19,9 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,16 +31,12 @@ import androidx.compose.material.icons.automirrored.filled.DirectionsWalk
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Dialpad
 import androidx.compose.material.icons.filled.NightlightRound
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material.icons.filled.Restaurant
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -47,11 +49,26 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.muneeb.homesafe.R
+import com.muneeb.homesafe.core.designsystem.theme.Border
+import com.muneeb.homesafe.core.designsystem.theme.BrandTint
+import com.muneeb.homesafe.core.designsystem.theme.DeepTeal
+import com.muneeb.homesafe.core.designsystem.theme.Divider
+import com.muneeb.homesafe.core.designsystem.theme.Faint
+import com.muneeb.homesafe.core.designsystem.theme.HeroSub
 import com.muneeb.homesafe.core.designsystem.theme.HomeSafeTheme
+import com.muneeb.homesafe.core.designsystem.theme.Ink
+import com.muneeb.homesafe.core.designsystem.theme.MapBg
+import com.muneeb.homesafe.core.designsystem.theme.Muted
+import com.muneeb.homesafe.core.designsystem.theme.NotificationRed
+import com.muneeb.homesafe.core.designsystem.theme.PillDotGreen
+import com.muneeb.homesafe.core.designsystem.theme.PureWhite
+import com.muneeb.homesafe.core.designsystem.theme.Subtle
 import java.time.LocalTime
 
 @Composable
@@ -69,7 +86,7 @@ fun HomeContent(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .background(PureWhite)
     ) {
         HomeTopBar(
             uiState = uiState,
@@ -81,139 +98,139 @@ fun HomeContent(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 24.dp)
+                .padding(start = 20.dp, end = 20.dp, top = 4.dp, bottom = 20.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
             Text(
                 text = "${greetingForTime()}, ${uiState.userName}",
-                fontSize = 15.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Normal,
+                color = Muted
             )
 
-            Spacer(modifier = Modifier.height(20.dp))
-
-            HomeStatusCard(uiState = uiState)
-
-            Spacer(modifier = Modifier.height(20.dp))
+            HomeHeroCard(uiState = uiState)
 
             Button(
                 onClick = onStartJourneyClick,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(52.dp),
+                modifier = Modifier.fillMaxWidth(),
+                contentPadding = PaddingValues(vertical = 15.dp),
                 shape = RoundedCornerShape(14.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary
+                    containerColor = DeepTeal,
+                    contentColor = PureWhite
                 )
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.DirectionsWalk,
                     contentDescription = null,
-                    modifier = Modifier.size(20.dp)
+                    modifier = Modifier.size(19.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = "Start an outing",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Medium
                 )
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
-
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 OutlinedButton(
                     onClick = onScanQrClick,
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(48.dp),
+                    modifier = Modifier.weight(1f),
+                    contentPadding = PaddingValues(vertical = 12.dp),
                     shape = RoundedCornerShape(14.dp),
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+                    border = BorderStroke(1.dp, Border),
                     colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = MaterialTheme.colorScheme.onBackground
+                        containerColor = PureWhite,
+                        contentColor = Ink
                     )
                 ) {
                     Icon(
                         imageVector = Icons.Filled.QrCodeScanner,
                         contentDescription = null,
-                        modifier = Modifier.size(18.dp)
+                        tint = DeepTeal,
+                        modifier = Modifier.size(17.dp)
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "Scan QR", fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+                    Spacer(modifier = Modifier.width(7.dp))
+                    Text(text = "Scan QR", fontSize = 14.sp, fontWeight = FontWeight.Medium)
                 }
 
                 OutlinedButton(
                     onClick = onEnterCodeClick,
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(48.dp),
+                    modifier = Modifier.weight(1f),
+                    contentPadding = PaddingValues(vertical = 12.dp),
                     shape = RoundedCornerShape(14.dp),
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+                    border = BorderStroke(1.dp, Border),
                     colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = MaterialTheme.colorScheme.onBackground
+                        containerColor = PureWhite,
+                        contentColor = Ink
                     )
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Dialpad,
                         contentDescription = null,
-                        modifier = Modifier.size(18.dp)
+                        tint = DeepTeal,
+                        modifier = Modifier.size(17.dp)
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "Enter code", fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+                    Spacer(modifier = Modifier.width(7.dp))
+                    Text(text = "Enter code", fontSize = 14.sp, fontWeight = FontWeight.Medium)
                 }
             }
 
-            Spacer(modifier = Modifier.height(28.dp))
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                SectionHeader(
+                    title = "Home location",
+                    titleFontSize = 15.sp,
+                    actionLabel = "Change",
+                    onActionClick = onChangeHomeLocationClick
+                )
 
-            SectionHeader(
-                title = "Home location",
-                actionLabel = "Change",
-                onActionClick = onChangeHomeLocationClick
-            )
+                HomeLocationMap(geofenceLabel = uiState.geofenceLabel)
 
-            Spacer(modifier = Modifier.height(12.dp))
-
-            HomeLocationMap(geofenceLabel = uiState.geofenceLabel)
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(
-                text = "${uiState.homeLocationLabel} · monitored automatically",
-                fontSize = 12.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-
-            Spacer(modifier = Modifier.height(28.dp))
+                Text(
+                    text = "${uiState.homeLocationLabel} · monitored automatically",
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = Muted
+                )
+            }
 
             SectionHeader(
                 title = "Recent journeys",
+                titleFontSize = 16.sp,
                 actionLabel = "View all",
                 onActionClick = onViewAllJourneysClick
             )
 
-            Spacer(modifier = Modifier.height(4.dp))
-
-            uiState.recentJourneys.forEachIndexed { index, journey ->
-                RecentJourneyRow(journey = journey)
-                if (index != uiState.recentJourneys.lastIndex) {
-                    HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f))
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(16.dp))
+            ) {
+                uiState.recentJourneys.forEachIndexed { index, journey ->
+                    RecentJourneyRow(journey = journey)
+                    if (index != uiState.recentJourneys.lastIndex) {
+                        HorizontalDivider(color = Divider, thickness = 1.dp)
+                    }
                 }
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
-
             Text(
                 text = "HomeSafe shares arrival status, never your live location.",
-                fontSize = 12.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                fontSize = 11.sp,
+                fontWeight = FontWeight.Normal,
+                color = Faint,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center
             )
-
-            Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }
@@ -228,78 +245,92 @@ private fun HomeTopBar(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp, vertical = 16.dp),
+            .background(PureWhite)
+            .statusBarsPadding()
+            .padding(start = 20.dp, end = 20.dp, top = 16.dp, bottom = 10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
             modifier = Modifier
-                .size(32.dp)
-                .background(
-                    color = MaterialTheme.colorScheme.primary,
-                    shape = RoundedCornerShape(9.dp)
-                ),
+                .size(30.dp)
+                .background(color = DeepTeal, shape = RoundedCornerShape(9.dp)),
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.ic_homesafe_logo),
+                painter = painterResource(id = R.drawable.ic_home_stroke),
                 contentDescription = "HomeSafe Logo",
-                tint = MaterialTheme.colorScheme.onPrimary,
+                tint = PureWhite,
                 modifier = Modifier.size(18.dp)
             )
         }
 
-        Spacer(modifier = Modifier.width(10.dp))
+        Spacer(modifier = Modifier.width(8.dp))
 
         Text(
             text = "HomeSafe",
             fontSize = 18.sp,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.weight(1f)
+            fontWeight = FontWeight.Medium,
+            color = Ink
         )
 
-        Box(
-            modifier = Modifier
-                .padding(end = 18.dp)
-                .clickable(onClick = onNotificationsClick)
-        ) {
-            Icon(
-                imageVector = Icons.Filled.Notifications,
-                contentDescription = "Notifications",
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.size(22.dp)
-            )
-            if (uiState.hasUnreadNotifications) {
-                Box(
-                    modifier = Modifier
-                        .size(8.dp)
-                        .align(Alignment.TopEnd)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.error)
+        Spacer(modifier = Modifier.weight(1f))
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Box(
+                modifier = Modifier
+                    .size(38.dp)
+                    .clickable(onClick = onNotificationsClick),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_bell_outline),
+                    contentDescription = "Notifications",
+                    tint = Ink,
+                    modifier = Modifier.size(20.dp)
+                )
+                if (uiState.hasUnreadNotifications) {
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .offset(x = (-7).dp, y = 6.dp)
+                            .size(10.dp)
+                            .clip(CircleShape)
+                            .background(PureWhite),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(7.dp)
+                                .clip(CircleShape)
+                                .background(NotificationRed)
+                        )
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.width(2.dp))
+
+            Box(
+                modifier = Modifier
+                    .size(34.dp)
+                    .clip(CircleShape)
+                    .background(BrandTint)
+                    .clickable(onClick = onProfileClick),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = uiState.userName.take(1).uppercase(),
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = DeepTeal
                 )
             }
-        }
-
-        Box(
-            modifier = Modifier
-                .size(32.dp)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.primaryContainer)
-                .clickable(onClick = onProfileClick),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = uiState.userName.take(1).uppercase(),
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary
-            )
         }
     }
 }
 
 @Composable
-private fun HomeStatusCard(
+private fun HomeHeroCard(
     uiState: HomeUiState,
     modifier: Modifier = Modifier
 ) {
@@ -311,80 +342,90 @@ private fun HomeStatusCard(
         "No active outing. Your location is monitored privately, not shared."
     }
 
-    Card(
-        modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(22.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary)
+    BoxWithConstraints(
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(20.dp))
+            .background(DeepTeal)
     ) {
-        Box(modifier = Modifier.fillMaxWidth()) {
-            Box(
+        val cardWidth = maxWidth
+
+        // ring-lg: left 238/350, top -34, size 150
+        Box(
+            modifier = Modifier
+                .offset(x = cardWidth * (238f / 350f), y = (-34).dp)
+                .size(150.dp)
+                .border(1.5.dp, PureWhite.copy(alpha = 0.14f), CircleShape)
+        )
+
+        // ring-sm: left 272/350, top 6, size 74, dashed
+        Canvas(
+            modifier = Modifier
+                .offset(x = cardWidth * (272f / 350f), y = 6.dp)
+                .size(74.dp)
+        ) {
+            drawCircle(
+                color = PureWhite.copy(alpha = 0.4f),
+                radius = size.minDimension / 2f,
+                style = Stroke(
+                    width = 1.5.dp.toPx(),
+                    pathEffect = PathEffect.dashPathEffect(floatArrayOf(6f, 6f))
+                )
+            )
+        }
+
+        // hero-home icon: left 296/350, top 30, size 26
+        Icon(
+            painter = painterResource(id = R.drawable.ic_home_stroke),
+            contentDescription = null,
+            tint = PureWhite,
+            modifier = Modifier
+                .offset(x = cardWidth * (296f / 350f), y = 30.dp)
+                .size(26.dp)
+        )
+
+        Column(
+            modifier = Modifier.padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Row(
                 modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .offset(x = 28.dp, y = (-28).dp)
-                    .size(120.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.06f))
+                    .wrapContentWidth()
+                    .clip(RoundedCornerShape(50))
+                    .background(PureWhite.copy(alpha = 0.16f))
+                    .padding(horizontal = 10.dp, vertical = 5.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(7.dp)
+                        .clip(CircleShape)
+                        .background(PillDotGreen)
+                )
+                Spacer(modifier = Modifier.width(6.dp))
+                Text(
+                    text = badgeLabel,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = PureWhite
+                )
+            }
+
+            Text(
+                text = title,
+                fontSize = 26.sp,
+                fontWeight = FontWeight.Medium,
+                color = PureWhite
             )
 
-            Column(modifier = Modifier.padding(20.dp)) {
-                Row(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(50))
-                        .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.18f))
-                        .padding(horizontal = 12.dp, vertical = 6.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(6.dp)
-                            .clip(CircleShape)
-                            .background(MaterialTheme.colorScheme.onPrimary)
-                    )
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Text(
-                        text = badgeLabel,
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = MaterialTheme.colorScheme.onPrimary
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(18.dp))
-
-                Text(
-                    text = title,
-                    fontSize = 26.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    modifier = Modifier.width(220.dp)
-                )
-
-                Spacer(modifier = Modifier.height(6.dp))
-
-                Text(
-                    text = subtitle,
-                    fontSize = 13.sp,
-                    color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.85f),
-                    modifier = Modifier.width(220.dp)
-                )
-            }
-
-            Box(
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(top = 20.dp, end = 20.dp)
-                    .size(56.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.15f)),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_home_icon),
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onPrimary,
-                    modifier = Modifier.size(24.dp)
-                )
-            }
+            Text(
+                text = subtitle,
+                fontSize = 13.sp,
+                fontWeight = FontWeight.Normal,
+                lineHeight = 18.sp,
+                color = HeroSub,
+                modifier = Modifier.widthIn(max = 270.dp)
+            )
         }
     }
 }
@@ -392,6 +433,7 @@ private fun HomeStatusCard(
 @Composable
 private fun SectionHeader(
     title: String,
+    titleFontSize: TextUnit,
     actionLabel: String,
     onActionClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -402,16 +444,16 @@ private fun SectionHeader(
     ) {
         Text(
             text = title,
-            fontSize = 17.sp,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onBackground,
+            fontSize = titleFontSize,
+            fontWeight = FontWeight.Medium,
+            color = Ink,
             modifier = Modifier.weight(1f)
         )
         Text(
             text = actionLabel,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.primary,
+            fontSize = 13.sp,
+            fontWeight = FontWeight.Medium,
+            color = DeepTeal,
             modifier = Modifier.clickable(onClick = onActionClick)
         )
     }
@@ -422,73 +464,73 @@ private fun HomeLocationMap(
     geofenceLabel: String,
     modifier: Modifier = Modifier
 ) {
-    val gridColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
-    val ringColor = MaterialTheme.colorScheme.primary
-    val pinColor = MaterialTheme.colorScheme.primary
-    val pinIconColor = MaterialTheme.colorScheme.onPrimary
-
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(140.dp)
-            .clip(RoundedCornerShape(16.dp))
-            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .height(88.dp)
+            .clip(RoundedCornerShape(12.dp))
+            .background(MapBg)
     ) {
         Canvas(modifier = Modifier.fillMaxSize()) {
             val w = size.width
             val h = size.height
             val lineWidth = 1.dp.toPx()
+            val gridColor = DeepTeal.copy(alpha = 0.07f)
 
-            drawLine(gridColor, Offset(w / 3f, 0f), Offset(w / 3f, h), lineWidth)
-            drawLine(gridColor, Offset(2 * w / 3f, 0f), Offset(2 * w / 3f, h), lineWidth)
-            drawLine(gridColor, Offset(0f, h / 2f), Offset(w, h / 2f), lineWidth)
+            drawLine(gridColor, Offset(0f, 28.dp.toPx()), Offset(w, 28.dp.toPx()), lineWidth)
+            drawLine(gridColor, Offset(0f, 60.dp.toPx()), Offset(w, 60.dp.toPx()), lineWidth)
+            drawLine(gridColor, Offset(w * 0.305f, 0f), Offset(w * 0.305f, h), lineWidth)
+            drawLine(gridColor, Offset(w * 0.695f, 0f), Offset(w * 0.695f, h), lineWidth)
 
-            val center = Offset(w / 2f, h / 2f)
-            val dashEffect = PathEffect.dashPathEffect(floatArrayOf(6f, 6f))
+            val dashEffect = PathEffect.dashPathEffect(floatArrayOf(5f, 5f))
 
+            // .geo: 80dp circle, centered horizontally, top offset 4dp
             drawCircle(
-                color = ringColor.copy(alpha = 0.35f),
-                radius = 52.dp.toPx(),
-                center = center,
-                style = Stroke(width = lineWidth, pathEffect = dashEffect)
+                color = DeepTeal.copy(alpha = 0.45f),
+                radius = 40.dp.toPx(),
+                center = Offset(w / 2f, 4.dp.toPx() + 40.dp.toPx()),
+                style = Stroke(width = 1.5.dp.toPx(), pathEffect = dashEffect)
             )
+            // .geo-inner: 56dp circle, centered horizontally, top offset 16dp
             drawCircle(
-                color = ringColor.copy(alpha = 0.22f),
-                radius = 36.dp.toPx(),
-                center = center,
-                style = Stroke(width = lineWidth, pathEffect = dashEffect)
+                color = DeepTeal.copy(alpha = 0.25f),
+                radius = 28.dp.toPx(),
+                center = Offset(w / 2f, 16.dp.toPx() + 28.dp.toPx()),
+                style = Stroke(width = 1.5.dp.toPx())
             )
         }
 
+        // marker: 30dp circle, centered horizontally, top offset 29dp
         Box(
             modifier = Modifier
-                .align(Alignment.Center)
-                .size(44.dp)
+                .align(Alignment.TopCenter)
+                .offset(y = 29.dp)
+                .size(30.dp)
                 .clip(CircleShape)
-                .background(pinColor),
+                .background(DeepTeal),
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.ic_home_icon),
+                painter = painterResource(id = R.drawable.ic_home_stroke),
                 contentDescription = null,
-                tint = pinIconColor,
-                modifier = Modifier.size(20.dp)
+                tint = PureWhite,
+                modifier = Modifier.size(16.dp)
             )
         }
 
         Box(
             modifier = Modifier
                 .align(Alignment.BottomStart)
-                .padding(10.dp)
+                .padding(start = 8.dp, bottom = 10.dp)
                 .clip(RoundedCornerShape(50))
-                .background(MaterialTheme.colorScheme.surface)
-                .padding(horizontal = 10.dp, vertical = 4.dp)
+                .background(PureWhite)
+                .padding(horizontal = 9.dp, vertical = 3.dp)
         ) {
             Text(
                 text = geofenceLabel,
                 fontSize = 11.sp,
                 fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = DeepTeal
             )
         }
     }
@@ -502,14 +544,14 @@ private fun RecentJourneyRow(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 12.dp),
+            .padding(vertical = 14.dp, horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
             modifier = Modifier
-                .size(40.dp)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.primaryContainer),
+                .size(38.dp)
+                .clip(RoundedCornerShape(11.dp))
+                .background(BrandTint),
             contentAlignment = Alignment.Center
         ) {
             Icon(
@@ -518,7 +560,7 @@ private fun RecentJourneyRow(
                     JourneyIcon.DINING -> Icons.Filled.Restaurant
                 },
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
+                tint = DeepTeal,
                 modifier = Modifier.size(18.dp)
             )
         }
@@ -529,30 +571,35 @@ private fun RecentJourneyRow(
             Text(
                 text = journey.title,
                 fontSize = 14.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onBackground
+                fontWeight = FontWeight.Medium,
+                color = Ink
             )
             Spacer(modifier = Modifier.height(2.dp))
             Text(
                 text = "${journey.dateLabel} · ${journey.companionsLabel}",
                 fontSize = 12.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                fontWeight = FontWeight.Normal,
+                color = Subtle,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
         }
+
+        Spacer(modifier = Modifier.width(8.dp))
 
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
                 imageVector = Icons.Filled.CheckCircle,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(14.dp)
+                tint = DeepTeal,
+                modifier = Modifier.size(15.dp)
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
                 text = journey.statusLabel,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.primary
+                color = DeepTeal
             )
         }
     }

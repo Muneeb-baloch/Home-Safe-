@@ -11,6 +11,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.muneeb.homesafe.feature.home.HomeScreen
 
+const val ALERTS_ROUTE = "alerts"
+
 @Composable
 fun HomeSafeNavHost(
     navController: NavHostController,
@@ -28,13 +30,18 @@ fun HomeSafeNavHost(
             // Replace with actual JourneysScreen()
             ScreenPlaceholder("Journeys Screen")
         }
-        composable(TopLevelDestination.ALERTS.route) {
-            // Replace with actual AlertsScreen()
-            ScreenPlaceholder("Alerts Screen")
+        composable(TopLevelDestination.COMPANIONS.route) {
+            // Replace with actual CompanionsScreen()
+            ScreenPlaceholder("Companions Screen")
         }
         composable(TopLevelDestination.PROFILE.route) {
             // Replace with actual ProfileScreen()
             ScreenPlaceholder("Profile Screen")
+        }
+        composable(ALERTS_ROUTE) {
+            // Reached from the notification bell in the header, not the bottom nav.
+            // Replace with actual AlertsScreen()
+            ScreenPlaceholder("Alerts Screen")
         }
     }
 }
