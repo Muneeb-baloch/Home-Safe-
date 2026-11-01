@@ -38,6 +38,7 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+        isCoreLibraryDesugaringEnabled = true
     }
 
     buildFeatures {
@@ -56,6 +57,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
 
     implementation("androidx.core:core-splashscreen:1.2.0")
+
+    coreLibraryDesugaring(libs.android.desugar.jdk.libs)
 
     testImplementation(libs.junit)
 

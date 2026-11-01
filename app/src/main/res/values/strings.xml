@@ -4,6 +4,8 @@
     <!-- Shared -->
     <string name="cd_back">Back</string>
     <string name="setup_step_format">Step %1$d of %2$d</string>
+    <string name="cd_more_options">More options</string>
+    <string name="outing_companions_count_format">Companions · %1$d</string>
 
     <!-- Setup · Location access -->
     <string name="setup_location_heading">Let HomeSafe know when you\'re home</string>
@@ -59,4 +61,46 @@
     <string name="setup_radius_250">250 m</string>
     <string name="setup_radius_hint">Bigger detects arrival sooner; smaller is more precise.</string>
     <string name="setup_save_as_home_button">Save as Home</string>
+
+    <!-- Outing · Start an outing -->
+    <string name="outing_start_title">Start an outing</string>
+    <string name="outing_name_label">Outing name</string>
+    <string name="outing_invite_companions_title">Invite companions</string>
+    <string name="outing_invite_companions_subtitle">They\'re only notified for this outing — nothing permanent.</string>
+    <string name="outing_trusted_contacts_label">Trusted contacts</string>
+    <string name="outing_trusted_contact_subtitle">Trusted contact</string>
+    <string name="outing_added_label">Added</string>
+    <string name="outing_invite_label">Invite</string>
+    <string name="outing_add_trusted_contact_button">Add a trusted contact</string>
+    <string name="outing_or_invite_anyone">or invite anyone</string>
+    <string name="outing_will_be_notified">Will be notified</string>
+    <string name="outing_notify_hint">They\'ll be notified when you reach Home · 150m zone</string>
+    <string name="outing_start_button">Start outing</string>
+    <string name="outing_privacy_footer">Only arrival status is shared — never your live location.</string>
+    <string name="cd_qr_code">View QR code</string>
+    <string name="cd_share_code">Share code</string>
+
+    <!-- Outing · Invite companions -->
+    <string name="outing_invite_title">Invite companions</string>
+    <string name="outing_search_hint">Search name or number</string>
+    <string name="outing_selected_count_format">%1$d selected</string>
+    <string name="outing_frequent_section_label">FREQUENT</string>
+    <string name="outing_outings_together_format">%1$d outings together</string>
+    <string name="outing_add_companions_button_format">Add %1$d companions</string>
+    <string name="cd_remove_contact_format">Remove %1$s</string>
+
+    <!-- Outing · Active outing -->
+    <string name="outing_active_title">Active outing</string>
+    <string name="outing_active_pill_sample">Outing active · started 8:05 PM</string>
+    <string name="outing_youre_out_title">You\'re out</string>
+    <string name="outing_youre_out_subtitle">Enjoy your night — we\'ll tell your companions the moment you\'re home.</string>
+    <string name="outing_step_started">Started</string>
+    <string name="outing_step_out">Out</string>
+    <string name="outing_step_home">Home</string>
+    <string name="outing_manage_button">Manage</string>
+    <string name="outing_notified_on_arrival">Notified on arrival</string>
+    <string name="outing_heading_home_button">I\'m heading home</string>
+    <string name="outing_share_button">Share</string>
+    <string name="outing_end_outing_button">End outing</string>
+    <string name="outing_active_privacy_footer">HomeSafe detects your arrival automatically — no need to open the app.</string>
 </resources>

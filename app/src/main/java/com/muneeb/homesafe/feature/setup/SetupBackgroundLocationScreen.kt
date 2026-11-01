@@ -4,13 +4,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -32,9 +29,9 @@ import com.muneeb.homesafe.core.designsystem.theme.Faint
 import com.muneeb.homesafe.core.designsystem.theme.HomeSafeTheme
 import com.muneeb.homesafe.core.designsystem.theme.Ink
 import com.muneeb.homesafe.core.designsystem.theme.Muted
-import com.muneeb.homesafe.core.designsystem.theme.Page
 import com.muneeb.homesafe.core.designsystem.theme.PureWhite
 import com.muneeb.homesafe.ui.components.HomeSafePrimaryButton
+import com.muneeb.homesafe.ui.components.HomeSafeScreen
 import com.muneeb.homesafe.ui.components.HomeSafeTextButton
 import com.muneeb.homesafe.ui.components.HomeSafeTopBar
 import com.muneeb.homesafe.ui.components.RadioOptionRow
@@ -47,23 +44,38 @@ fun SetupBackgroundLocationScreen(
     onNotNowClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(Page)
-            .windowInsetsPadding(WindowInsets.statusBars)
+    HomeSafeScreen(
+        modifier = modifier,
+        topBar = {
+            HomeSafeTopBar(
+                onLeadingClick = onBackClick,
+                leadingContentDescription = stringResource(R.string.cd_back),
+                trailing = { StepBadge(step = 2, totalSteps = 3) }
+            )
+        },
+        bottomBar = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 20.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                HomeSafePrimaryButton(
+                    text = stringResource(R.string.setup_open_settings_button),
+                    onClick = onOpenSettingsClick
+                )
+                HomeSafeTextButton(
+                    text = stringResource(R.string.setup_not_now_button),
+                    onClick = onNotNowClick
+                )
+            }
+        }
     ) {
-        HomeSafeTopBar(
-            onLeadingClick = onBackClick,
-            leadingContentDescription = stringResource(R.string.cd_back),
-            trailing = { StepBadge(step = 2, totalSteps = 3) }
-        )
-
         Column(
             modifier = Modifier
-                .weight(1f)
+                .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 20.dp),
+                .padding(horizontal = 20.dp, vertical = 10.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -126,25 +138,10 @@ fun SetupBackgroundLocationScreen(
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Normal,
                     lineHeight = 19.sp,
-                    color = DeepTeal
+                    color = DeepTeal,
+                    modifier = Modifier.weight(1f)
                 )
             }
-        }
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp, vertical = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp)
-        ) {
-            HomeSafePrimaryButton(
-                text = stringResource(R.string.setup_open_settings_button),
-                onClick = onOpenSettingsClick
-            )
-            HomeSafeTextButton(
-                text = stringResource(R.string.setup_not_now_button),
-                onClick = onNotNowClick
-            )
         }
     }
 }

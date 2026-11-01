@@ -17,22 +17,26 @@ fun MainScreen() {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
+    val showBottomBar = currentRoute in TopLevelDestination.entries.map { it.route }
+
     Scaffold(
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         bottomBar = {
-            HomeSafeBottomBar(
-                destinations = TopLevelDestination.entries,
-                currentRoute = currentRoute,
-                onNavigateToDestination = { destination ->
-                    navController.navigate(destination.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+            if (showBottomBar) {
+                HomeSafeBottomBar(
+                    destinations = TopLevelDestination.entries,
+                    currentRoute = currentRoute,
+                    onNavigateToDestination = { destination ->
+                        navController.navigate(destination.route) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                        launchSingleTop = true
-                        restoreState = true
                     }
-                }
-            )
+                )
+            }
         }
     ) { innerPadding ->
         HomeSafeNavHost(

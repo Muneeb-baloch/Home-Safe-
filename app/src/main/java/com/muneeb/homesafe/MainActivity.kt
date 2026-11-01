@@ -12,12 +12,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.muneeb.homesafe.core.designsystem.theme.HomeSafeTheme
 import com.muneeb.homesafe.feature.splash.SplashContent
 import com.muneeb.homesafe.navigation.HomeSafeApp
-import com.muneeb.homesafe.navigation.MAIN_ROUTE
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -26,7 +24,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val splash = installSplashScreen()
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.dark(AndroidColor.TRANSPARENT),
+            navigationBarStyle = SystemBarStyle.dark(AndroidColor.TRANSPARENT)
+        )
+
 
         splash.setOnExitAnimationListener { provider ->
             provider.view.animate().alpha(0f).setDuration(250)
@@ -44,29 +46,16 @@ class MainActivity : ComponentActivity() {
                 }
 
                 if (showSplash) {
-                    LaunchedEffect(Unit) {
-                        enableEdgeToEdge(
-                            statusBarStyle = SystemBarStyle.dark(AndroidColor.parseColor("#176B5B")),
-                            navigationBarStyle = SystemBarStyle.dark(AndroidColor.parseColor("#176B5B"))
-                        )
-                    }
                     SplashContent()
                 } else {
-                    val navController = rememberNavController()
-                    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
-
-                    LaunchedEffect(currentRoute) {
-                        val color = if (currentRoute == MAIN_ROUTE) {
-                            AndroidColor.WHITE
-                        } else {
-                            AndroidColor.parseColor("#F4F6F5")
-                        }
+                    LaunchedEffect(Unit) {
                         enableEdgeToEdge(
-                            statusBarStyle = SystemBarStyle.light(color, color),
-                            navigationBarStyle = SystemBarStyle.light(color, color)
+                            statusBarStyle = SystemBarStyle.light(AndroidColor.TRANSPARENT, AndroidColor.TRANSPARENT),
+                            navigationBarStyle = SystemBarStyle.light(AndroidColor.TRANSPARENT, AndroidColor.TRANSPARENT)
                         )
                     }
 
+                    val navController = rememberNavController()
                     HomeSafeApp(navController = navController)
                 }
             }

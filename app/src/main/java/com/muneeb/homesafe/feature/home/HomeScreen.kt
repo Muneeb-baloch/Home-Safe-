@@ -8,13 +8,14 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun HomeScreen(
+    onStartOutingClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val uiState by remember { mutableStateOf(HomeUiState()) }
 
     HomeContent(
         uiState = uiState,
-        onStartJourneyClick = { /* Navigate to start-an-outing flow */ },
+        onStartJourneyClick = onStartOutingClick,
         onScanQrClick = { /* Navigate to QR scanner */ },
         onEnterCodeClick = { /* Navigate to enter-code flow */ },
         onChangeHomeLocationClick = { /* Navigate to home location picker */ },

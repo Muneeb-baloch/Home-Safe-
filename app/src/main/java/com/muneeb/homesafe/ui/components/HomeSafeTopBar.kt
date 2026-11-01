@@ -28,7 +28,7 @@ fun HomeSafeTopBar(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(start = 20.dp, end = 20.dp, top = 20.dp),
+            .padding(start = 20.dp, end = 20.dp, top = 4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         CircleIconButton(

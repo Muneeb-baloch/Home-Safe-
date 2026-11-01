@@ -79,6 +79,34 @@ Outlined, rounded caps and joins, stroke width about 2 (Lucide style). Use the c
 
 Edge-to-edge. Apply status-bar insets once only, on the header. Don't use the Material3 TopAppBar for the Home header; use a custom Row (padding top 16, bottom 10, horizontal 20). The status bar area and the header are both white with dark icons.
 
+## Layout rules (every screen)
+
+- Spacing is fixed: use `Arrangement.spacedBy(16.dp)` (14.dp on Home) between sections. Never use `SpaceBetween`, `SpaceEvenly`, `SpaceAround` or `weight()` to spread content vertically.
+- Screen structure: [top bar] + [scrollable content: `LazyColumn` or `Column.verticalScroll`] + [bottom action area pinned at the bottom, outside the scroll, with 16dp top padding and navigationBars inset].
+- Content must never shrink or clip: no fixed heights on lists or cards; cards wrap their content.
+- Rows of chips/pills: single line, horizontally scrollable (`LazyRow`) with 20dp content padding — never cut off at the screen edge.
+- Only the status bar inset is applied once at the top; only the navigation bar inset once at the bottom.
+- Every screen must use `HomeSafeScreen`. Never set status bar color or top insets inside a screen.
+
+## Keyboard rules (every screen with text input)
+
+- AndroidManifest: activity uses `android:windowSoftInputMode="adjustResize"`. With edge-to-edge, handle the keyboard with `WindowInsets.ime`.
+- The bottom action area (pinned button) gets `Modifier.imePadding()` so it sits right above the keyboard, never behind it.
+- Scrollable content also respects the keyboard (`imePadding` or `contentPadding` from `WindowInsets.ime`) so the focused field is never hidden; scroll the focused field into view (`BringIntoViewRequester`).
+- Never apply `imePadding` twice (not on both the Scaffold and the content).
+- Correct keyboard type per field: email → `KeyboardType.Email`, phone → `Phone`, password → `Password`, outing code → `Ascii` + `KeyboardCapitalization.Characters`, names → `Words` capitalization.
+- IME actions: `Next` moves to the next field, `Done`/`Search` closes the keyboard and triggers the screen action.
+- Tap outside a field or start scrolling → clear focus and hide the keyboard.
+- When the keyboard is open, nothing overlaps, clips or jumps; the top bar stays in place.
+
+## Verify before saying "done" (every UI change)
+
+1. Compare each changed screen side by side with its HTML in `design/screens`: top bar position, paddings, gaps, font sizes, colors.
+2. Test edge cases on the emulator: 0 items, many items (e.g. select all), long names, and font size set to Large in Android settings. Nothing may overlap, clip, stretch or run off-screen.
+3. Check the top bar matches every other screen (same `HomeSafeTopBar`, same position).
+4. On every screen with a text field: open the keyboard and check the focused field and the bottom button stay visible above it, then close it and check the layout returns to normal.
+5. Tell me what you checked and anything that still differs.
+
 ## Data model (Firestore)
 
 - `users/{uid}`: name, email, homeLocation {lat, lng, radius, address}, fcmTokens[], settings{}

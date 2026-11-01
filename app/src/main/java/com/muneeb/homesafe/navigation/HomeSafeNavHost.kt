@@ -10,8 +10,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.muneeb.homesafe.feature.home.HomeScreen
+import com.muneeb.homesafe.feature.outing.ActiveOutingScreen
+import com.muneeb.homesafe.feature.outing.InviteCompanionsScreen
+import com.muneeb.homesafe.feature.outing.StartOutingScreen
 
 const val ALERTS_ROUTE = "alerts"
+const val START_OUTING_ROUTE = "start_outing"
+const val INVITE_COMPANIONS_ROUTE = "invite_companions"
+const val ACTIVE_OUTING_ROUTE = "active_outing"
 
 @Composable
 fun HomeSafeNavHost(
@@ -24,7 +30,9 @@ fun HomeSafeNavHost(
         modifier = modifier
     ) {
         composable(TopLevelDestination.HOME.route) {
-            HomeScreen()
+            HomeScreen(
+                onStartOutingClick = { navController.navigate(START_OUTING_ROUTE) }
+            )
         }
         composable(TopLevelDestination.JOURNEYS.route) {
             ScreenPlaceholder("Journeys Screen")
@@ -37,6 +45,33 @@ fun HomeSafeNavHost(
         }
         composable(ALERTS_ROUTE) {
             ScreenPlaceholder("Alerts Screen")
+        }
+        composable(START_OUTING_ROUTE) {
+            StartOutingScreen(
+                onBackClick = { navController.popBackStack() },
+                onAddTrustedContactClick = { navController.navigate(INVITE_COMPANIONS_ROUTE) },
+                onStartOutingClick = {
+                    navController.navigate(ACTIVE_OUTING_ROUTE) {
+                        popUpTo(TopLevelDestination.HOME.route) { inclusive = false }
+                    }
+                }
+            )
+        }
+        composable(INVITE_COMPANIONS_ROUTE) {
+            InviteCompanionsScreen(
+                onBackClick = { navController.popBackStack() },
+                onAddCompanionsClick = { navController.popBackStack() }
+            )
+        }
+        composable(ACTIVE_OUTING_ROUTE) {
+            ActiveOutingScreen(
+                onBackClick = { navController.popBackStack() },
+                onManageCompanionsClick = {},
+                onMoreOptionsClick = {},
+                onHeadingHomeClick = {},
+                onShareClick = {},
+                onEndOutingClick = {}
+            )
         }
     }
 }

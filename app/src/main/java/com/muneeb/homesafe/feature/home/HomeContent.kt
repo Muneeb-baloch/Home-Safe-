@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,8 +21,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -71,6 +68,7 @@ import com.muneeb.homesafe.core.designsystem.theme.NotificationRed
 import com.muneeb.homesafe.core.designsystem.theme.PillDotGreen
 import com.muneeb.homesafe.core.designsystem.theme.PureWhite
 import com.muneeb.homesafe.core.designsystem.theme.Subtle
+import com.muneeb.homesafe.ui.components.HomeSafeScreen
 import java.time.LocalTime
 
 @Composable
@@ -85,18 +83,17 @@ fun HomeContent(
     onProfileClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(PureWhite)
-            .windowInsetsPadding(WindowInsets.statusBars)
+    HomeSafeScreen(
+        modifier = modifier,
+        background = PureWhite,
+        topBar = {
+            HomeTopBar(
+                uiState = uiState,
+                onNotificationsClick = onNotificationsClick,
+                onProfileClick = onProfileClick
+            )
+        }
     ) {
-        HomeTopBar(
-            uiState = uiState,
-            onNotificationsClick = onNotificationsClick,
-            onProfileClick = onProfileClick
-        )
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -186,8 +183,8 @@ fun HomeContent(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                    .padding(5.dp),
+                verticalArrangement = Arrangement.spacedBy(5.dp)
             ) {
                 SectionHeader(
                     title = "Home location",
@@ -206,22 +203,27 @@ fun HomeContent(
                 )
             }
 
-            SectionHeader(
-                title = "Recent journeys",
-                titleFontSize = 16.sp,
-                actionLabel = "View all",
-                onActionClick = onViewAllJourneysClick
-            )
-
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(16.dp))
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                uiState.recentJourneys.forEachIndexed { index, journey ->
-                    RecentJourneyRow(journey = journey)
-                    if (index != uiState.recentJourneys.lastIndex) {
-                        HorizontalDivider(color = Divider, thickness = 1.dp)
+                SectionHeader(
+                    title = "Recent journeys",
+                    titleFontSize = 16.sp,
+                    actionLabel = "View all",
+                    onActionClick = onViewAllJourneysClick
+                )
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(16.dp))
+                ) {
+                    uiState.recentJourneys.forEachIndexed { index, journey ->
+                        RecentJourneyRow(journey = journey)
+                        if (index != uiState.recentJourneys.lastIndex) {
+                            HorizontalDivider(color = Divider, thickness = 1.dp)
+                        }
                     }
                 }
             }
@@ -249,7 +251,7 @@ private fun HomeTopBar(
         modifier = modifier
             .fillMaxWidth()
             .background(PureWhite)
-            .padding(start = 20.dp, end = 20.dp, top = 16.dp, bottom = 10.dp),
+            .padding(start = 20.dp, end = 20.dp, top = 4.dp, bottom = 10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
@@ -540,7 +542,7 @@ private fun RecentJourneyRow(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 14.dp, horizontal = 16.dp),
+            .padding(vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(

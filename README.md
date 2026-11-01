@@ -66,6 +66,7 @@ UI phase — screens and navigation are being built. Business logic (location, F
 
 ## Getting started
 
+
 1. Clone the repo:
    ```
    git clone https://github.com/Muneeb-baloch/Home-Safe-.git
