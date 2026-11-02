@@ -103,4 +103,110 @@
     <string name="outing_share_button">Share</string>
     <string name="outing_end_outing_button">End outing</string>
     <string name="outing_active_privacy_footer">HomeSafe detects your arrival automatically — no need to open the app.</string>
+
+    <!-- Journeys -->
+    <string name="journeys_title">Journeys</string>
+    <string name="journeys_subtitle">Your outings and safe arrivals.</string>
+    <string name="cd_search">Search</string>
+    <string name="journeys_filter_all_format">All · %1$d</string>
+    <string name="journeys_filter_with_companions">With companions</string>
+    <string name="journeys_filter_solo">Solo</string>
+    <string name="journeys_safe_arrivals_format">%1$d safe arrivals</string>
+    <string name="journeys_safe_arrivals_subtitle">Every outing ended with a safe arrival.</string>
+    <string name="journeys_outings_count_format">%1$d outings</string>
+    <string name="journeys_companions_count_format">%1$d companions</string>
+    <string name="journeys_solo_label">Solo</string>
+    <string name="journeys_status_arrived">Arrived</string>
+    <string name="journeys_encrypted_footer">All journey logs are end-to-end encrypted</string>
+    <string name="journeys_empty_title">No journeys here yet</string>
+    <string name="journeys_empty_subtitle">Outings that match this filter will show up here.</string>
+    <string name="cd_journey_status_icon">Status</string>
+
+    <!-- Journey details -->
+    <string name="journey_details_title">Journey details</string>
+    <string name="journey_details_status_arrived_safely">Arrived safely</string>
+    <string name="journey_details_hero_title">Arrived home safely</string>
+    <string name="journey_details_hero_time_format">at %1$s</string>
+    <string name="journey_details_timeline_label">Journey timeline</string>
+    <string name="journey_details_step_outing_started">Outing started</string>
+    <string name="journey_details_step_left_home">Left home</string>
+    <string name="journey_details_step_heading_home">Heading home</string>
+    <string name="journey_details_step_arrived_home">Arrived home</string>
+    <string name="journey_details_companions_notified_format">Companions notified · %1$d</string>
+    <string name="journey_details_notified_label">Notified</string>
+    <string name="journey_details_solo_title">Solo journey</string>
+    <string name="journey_details_solo_subtitle">You went out on your own, so no companions were notified for this trip.</string>
+    <string name="journey_details_footer">Only arrival status was shared — never your live location.</string>
+
+    <!-- Alerts -->
+    <string name="alerts_title">Alerts</string>
+    <string name="alerts_empty_title">No alerts yet</string>
+    <string name="alerts_empty_subtitle">Arrivals and outing invites will show up here.</string>
+
+    <!-- Companions -->
+    <string name="companions_title">Companions</string>
+    <string name="companions_subtitle">People you go out with.</string>
+    <string name="companions_filter_trusted_format">Trusted · %1$d</string>
+    <string name="companions_filter_recent">Recent</string>
+    <string name="cd_add_trusted_contact">Add a trusted contact</string>
+    <string name="companions_last_outing_format">last %1$s</string>
+    <string name="companions_recent_section_label">Recent companions</string>
+    <string name="companions_joined_format">Joined \"%1$s\"</string>
+    <string name="companions_trust_button">Trust</string>
+    <string name="companions_empty_trusted_title">No trusted companions yet</string>
+    <string name="companions_empty_trusted_subtitle">Add someone you go out with often to keep them notified automatically.</string>
+    <string name="companions_empty_recent_title">No recent companions yet</string>
+    <string name="companions_empty_recent_subtitle">People who join your outings will show up here.</string>
+    <plurals name="companions_outings_count">
+        <item quantity="one">%1$d outing</item>
+        <item quantity="other">%1$d outings</item>
+    </plurals>
+
+    <!-- Contact details -->
+    <string name="contact_details_title">Contact</string>
+    <string name="contact_details_trusted_pill">Trusted contact</string>
+    <string name="contact_details_outings_together_label">outings together</string>
+    <string name="contact_details_last_outing_label">last outing</string>
+    <string name="contact_details_invite_button">Invite to an outing</string>
+    <string name="contact_details_message_button">Message</string>
+    <string name="contact_details_shared_outings_label">Shared outings</string>
+    <string name="contact_details_remove_from_trusted">Remove from trusted</string>
+    <string name="cd_trusted_star_icon">Trusted</string>
+
+    <!-- Add trusted contact -->
+    <string name="add_trusted_contact_lead">Invite someone you go out with. They\'re only notified for outings you add them to — nothing permanent.</string>
+    <string name="add_trusted_contact_choose_phone_title">Choose from phone contacts</string>
+    <string name="add_trusted_contact_choose_phone_subtitle">Pick someone already in your phone</string>
+    <string name="add_trusted_contact_or_manual">or add manually</string>
+    <string name="add_trusted_contact_full_name_label">Full name</string>
+    <string name="add_trusted_contact_full_name_hint">e.g. Ahmed Khan</string>
+    <string name="add_trusted_contact_email_label">Email address</string>
+    <string name="add_trusted_contact_email_hint">name@example.com</string>
+    <string name="add_trusted_contact_info_note">We\'ll email them an invite. They become a trusted contact once they join HomeSafe.</string>
+    <string name="add_trusted_contact_send_invite_button">Send invite</string>
+    <string name="add_trusted_contact_or_spot">or invite on the spot</string>
+    <string name="add_trusted_contact_show_qr_button">Show QR</string>
+    <string name="add_trusted_contact_share_link_button">Share link</string>
+
+    <!-- Profile -->
+    <string name="profile_title">Profile</string>
+    <string name="profile_edit_button">Edit profile</string>
+    <string name="profile_home_safety_section">Home &amp; safety</string>
+    <string name="profile_home_location_title">Home location</string>
+    <string name="profile_home_location_subtitle_format">%1$s · %2$s zone</string>
+    <string name="profile_notifications_section">Notifications</string>
+    <string name="profile_account_section">Account</string>
+    <string name="profile_trusted_contacts_title">Trusted contacts</string>
+    <string name="profile_trusted_contacts_subtitle">Manage who\'s notified</string>
+    <string name="profile_privacy_title">Privacy &amp; data</string>
+    <string name="profile_privacy_subtitle">Control what you share</string>
+    <string name="profile_help_title">Help &amp; support</string>
+    <string name="profile_help_subtitle">FAQs and contact us</string>
+    <string name="profile_sign_out">Sign out</string>
+    <string name="profile_app_version">HomeSafe v1.0.0</string>
+
+    <!-- Edit profile -->
+    <string name="edit_profile_save_button">Save changes</string>
+    <string name="cd_change_photo">Change photo</string>
+    <string name="edit_profile_phone_label">Phone number</string>
 </resources>

@@ -8,12 +8,14 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun AlertsScreen(
+    onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val uiState by remember { mutableStateOf(AlertsUiState()) }
 
     AlertsContent(
         uiState = uiState,
+        onBackClick = onBackClick,
         modifier = modifier
     )
 }

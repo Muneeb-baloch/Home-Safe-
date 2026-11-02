@@ -1,7 +1,6 @@
 package com.muneeb.homesafe.feature.outing
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -31,10 +30,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.graphics.PathEffect
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
@@ -59,9 +54,11 @@ import com.muneeb.homesafe.core.designsystem.theme.Subtle
 import com.muneeb.homesafe.ui.components.AddedInviteButton
 import com.muneeb.homesafe.ui.components.CodeBox
 import com.muneeb.homesafe.ui.components.ContactRow
+import com.muneeb.homesafe.ui.components.DashedActionButton
 import com.muneeb.homesafe.ui.components.HomeSafePrimaryButton
 import com.muneeb.homesafe.ui.components.HomeSafeScreen
 import com.muneeb.homesafe.ui.components.HomeSafeTopBar
+import com.muneeb.homesafe.ui.components.OrDivider
 import com.muneeb.homesafe.ui.components.SectionCard
 
 private data class TrustedContactUi(
@@ -232,7 +229,10 @@ fun StartOutingScreen(
                         }
                     }
 
-                    AddTrustedContactButton(onClick = onAddTrustedContactClick)
+                    DashedActionButton(
+                        text = stringResource(R.string.outing_add_trusted_contact_button),
+                        onClick = onAddTrustedContactClick
+                    )
 
                     OrDivider(text = stringResource(R.string.outing_or_invite_anyone))
 
@@ -299,63 +299,6 @@ fun StartOutingScreen(
                 )
             }
         }
-    }
-}
-
-@Composable
-private fun AddTrustedContactButton(
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val borderColor = Border
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(14.dp))
-            .drawBehind {
-                drawRoundRect(
-                    color = borderColor,
-                    style = Stroke(
-                        width = 1.5.dp.toPx(),
-                        pathEffect = PathEffect.dashPathEffect(floatArrayOf(6f, 6f))
-                    ),
-                    cornerRadius = CornerRadius(14.dp.toPx())
-                )
-            }
-            .clickable(onClick = onClick)
-            .padding(vertical = 13.dp),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            painter = painterResource(id = R.drawable.ic_user_plus),
-            contentDescription = null,
-            tint = DeepTeal,
-            modifier = Modifier.width(18.dp)
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(
-            text = stringResource(R.string.outing_add_trusted_contact_button),
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Medium,
-            color = DeepTeal
-        )
-    }
-}
-
-@Composable
-private fun OrDivider(
-    text: String,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        HorizontalDivider(modifier = Modifier.weight(1f), color = Border, thickness = 1.dp)
-        Text(text = text, fontSize = 12.sp, fontWeight = FontWeight.Normal, color = Faint)
-        HorizontalDivider(modifier = Modifier.weight(1f), color = Border, thickness = 1.dp)
     }
 }
 

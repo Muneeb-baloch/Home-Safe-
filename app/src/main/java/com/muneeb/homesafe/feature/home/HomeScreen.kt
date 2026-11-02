@@ -9,6 +9,9 @@ import androidx.compose.ui.Modifier
 @Composable
 fun HomeScreen(
     onStartOutingClick: () -> Unit = {},
+    onNotificationsClick: () -> Unit = {},
+    onProfileClick: () -> Unit = {},
+    onViewAllJourneysClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val uiState by remember { mutableStateOf(HomeUiState()) }
@@ -19,9 +22,9 @@ fun HomeScreen(
         onScanQrClick = { /* Navigate to QR scanner */ },
         onEnterCodeClick = { /* Navigate to enter-code flow */ },
         onChangeHomeLocationClick = { /* Navigate to home location picker */ },
-        onViewAllJourneysClick = { /* Navigate to journeys list */ },
-        onNotificationsClick = { /* Navigate to alerts */ },
-        onProfileClick = { /* Navigate to profile */ },
+        onViewAllJourneysClick = onViewAllJourneysClick,
+        onNotificationsClick = onNotificationsClick,
+        onProfileClick = onProfileClick,
         modifier = modifier
     )
 }
