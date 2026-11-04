@@ -3,6 +3,7 @@
 
     <!-- Shared -->
     <string name="cd_back">Back</string>
+    <string name="cd_close">Close</string>
     <string name="setup_step_format">Step %1$d of %2$d</string>
     <string name="cd_more_options">More options</string>
     <string name="outing_companions_count_format">Companions · %1$d</string>
@@ -103,6 +104,60 @@
     <string name="outing_share_button">Share</string>
     <string name="outing_end_outing_button">End outing</string>
     <string name="outing_active_privacy_footer">HomeSafe detects your arrival automatically — no need to open the app.</string>
+
+    <!-- Outing · End outing confirm -->
+    <string name="end_outing_sheet_title">End this outing?</string>
+    <string name="end_outing_sheet_body">This closes Friday Night Out for everyone. Companions who haven\'t reached home won\'t be tracked for arrival anymore.</string>
+    <string name="end_outing_sheet_keep_active_button">Keep outing active</string>
+
+    <!-- Join · Scan QR -->
+    <string name="scan_qr_title">Scan to join</string>
+    <string name="scan_qr_hint">Point your camera at the QR code on your friend\'s phone</string>
+    <string name="scan_qr_enter_code_instead">Enter code instead</string>
+    <string name="cd_toggle_flashlight">Toggle flashlight</string>
+
+    <!-- Join · Enter code -->
+    <string name="enter_code_title">Join an outing</string>
+    <string name="enter_code_heading">Enter outing code</string>
+    <string name="enter_code_lead">Ask the person who started the outing for their 4-character code.</string>
+    <string name="enter_code_hint">Codes aren\'t case-sensitive and stop working when the outing ends.</string>
+    <string name="enter_code_find_outing_button">Find outing</string>
+    <string name="enter_code_scan_qr_instead">Scan QR instead</string>
+
+    <!-- Join · Confirmation -->
+    <string name="join_confirm_invited_by_format">%1$s invited you to</string>
+    <string name="join_confirm_outing_name_sample">Friday Night Out</string>
+    <string name="join_confirm_members_format">%1$s · since %2$s</string>
+    <string name="join_confirm_what_they_see_title">What they\'ll see</string>
+    <string name="join_confirm_info_arrival_title">When you reach home</string>
+    <string name="join_confirm_info_arrival_subtitle">Your home zone, not your address</string>
+    <string name="join_confirm_info_time_title">Your arrival time</string>
+    <string name="join_confirm_info_time_subtitle">e.g. \"Home at 11:42 PM\"</string>
+    <string name="join_confirm_info_location_title">Your live location or route</string>
+    <string name="join_confirm_info_location_subtitle">Never shared</string>
+    <string name="join_confirm_home_zone_title">Your home zone</string>
+    <string name="join_confirm_home_zone_subtitle">Gulshan-e-Iqbal · 150m</string>
+    <string name="join_confirm_change_label">Change</string>
+    <string name="join_confirm_join_button">Join outing</string>
+    <string name="join_confirm_decline_button">Decline</string>
+
+    <!-- Outing · Joined outing (friend view) -->
+    <string name="joined_outing_pill_sample">Joined · 8:14 PM</string>
+    <string name="joined_outing_youre_out_subtitle">Muneeb, Ahmed and Ali will know when you\'re home. Enjoy your night.</string>
+    <string name="joined_outing_step_joined">Joined</string>
+    <string name="joined_outing_status_out">Out</string>
+    <string name="joined_outing_leave_button">Leave outing</string>
+    <string name="leave_outing_sheet_title">Leave Friday Night Out?</string>
+    <string name="leave_outing_sheet_body">Muneeb, Ahmed and Ali won\'t be notified when you get home. You can rejoin with the code while the outing is active.</string>
+    <string name="leave_outing_sheet_stay_button">Stay in outing</string>
+
+    <!-- Arrival confirmation -->
+    <string name="arrival_title">You\'re home</string>
+    <string name="arrival_subtitle_format">Arrived %1$s · %2$s</string>
+    <string name="arrival_companions_notified_format">Companions notified · %1$d</string>
+    <string name="arrival_delivered_label">Delivered</string>
+    <string name="arrival_done_button">Done</string>
+    <string name="arrival_view_journey_button">View journey</string>
 
     <!-- Journeys -->
     <string name="journeys_title">Journeys</string>

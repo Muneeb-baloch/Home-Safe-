@@ -18,9 +18,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,6 +48,7 @@ import com.muneeb.homesafe.core.designsystem.theme.PureWhite
 import com.muneeb.homesafe.core.designsystem.theme.Subtle
 import com.muneeb.homesafe.ui.components.Avatar
 import com.muneeb.homesafe.ui.components.CircleIconButton
+import com.muneeb.homesafe.ui.components.ConfirmActionSheet
 import com.muneeb.homesafe.ui.components.HomeSafeOutlineButton
 import com.muneeb.homesafe.ui.components.HomeSafePrimaryButton
 import com.muneeb.homesafe.ui.components.HomeSafeScreen
@@ -52,6 +58,7 @@ import com.muneeb.homesafe.ui.components.JourneyStepState
 import com.muneeb.homesafe.ui.components.JourneyStepper
 import com.muneeb.homesafe.ui.components.Pill
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ActiveOutingScreen(
     onBackClick: () -> Unit,
@@ -62,6 +69,8 @@ fun ActiveOutingScreen(
     onEndOutingClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    var showEndSheet by remember { mutableStateOf(false) }
+
     HomeSafeScreen(
         modifier = modifier,
         topBar = {
@@ -115,7 +124,7 @@ fun ActiveOutingScreen(
                     )
                     HomeSafeOutlineButton(
                         text = stringResource(R.string.outing_end_outing_button),
-                        onClick = onEndOutingClick,
+                        onClick = { showEndSheet = true },
                         modifier = Modifier.weight(1f),
                         contentColor = DestructiveRed,
                         icon = {
@@ -218,6 +227,21 @@ fun ActiveOutingScreen(
                 )
             }
         }
+    }
+
+    if (showEndSheet) {
+        ConfirmActionSheet(
+            iconRes = R.drawable.ic_flag,
+            title = stringResource(R.string.end_outing_sheet_title),
+            body = stringResource(R.string.end_outing_sheet_body),
+            confirmText = stringResource(R.string.outing_end_outing_button),
+            dismissText = stringResource(R.string.end_outing_sheet_keep_active_button),
+            onConfirm = {
+                showEndSheet = false
+                onEndOutingClick()
+            },
+            onDismiss = { showEndSheet = false }
+        )
     }
 }
 

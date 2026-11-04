@@ -29,6 +29,7 @@ fun HomeSafePrimaryButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    containerColor: Color = DeepTeal,
     icon: @Composable (() -> Unit)? = null
 ) {
     Button(
@@ -39,7 +40,7 @@ fun HomeSafePrimaryButton(
             .height(52.dp),
         shape = RoundedCornerShape(16.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = DeepTeal,
+            containerColor = containerColor,
             contentColor = PureWhite
         )
     ) {

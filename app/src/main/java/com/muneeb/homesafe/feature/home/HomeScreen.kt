@@ -9,6 +9,8 @@ import androidx.compose.ui.Modifier
 @Composable
 fun HomeScreen(
     onStartOutingClick: () -> Unit = {},
+    onScanQrClick: () -> Unit = {},
+    onEnterCodeClick: () -> Unit = {},
     onNotificationsClick: () -> Unit = {},
     onProfileClick: () -> Unit = {},
     onViewAllJourneysClick: () -> Unit = {},
@@ -19,8 +21,8 @@ fun HomeScreen(
     HomeContent(
         uiState = uiState,
         onStartJourneyClick = onStartOutingClick,
-        onScanQrClick = { /* Navigate to QR scanner */ },
-        onEnterCodeClick = { /* Navigate to enter-code flow */ },
+        onScanQrClick = onScanQrClick,
+        onEnterCodeClick = onEnterCodeClick,
         onChangeHomeLocationClick = { /* Navigate to home location picker */ },
         onViewAllJourneysClick = onViewAllJourneysClick,
         onNotificationsClick = onNotificationsClick,

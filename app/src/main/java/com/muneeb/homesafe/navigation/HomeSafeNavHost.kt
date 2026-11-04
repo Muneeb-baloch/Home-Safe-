@@ -16,10 +16,15 @@ import com.muneeb.homesafe.feature.companions.AddTrustedContactScreen
 import com.muneeb.homesafe.feature.companions.CompanionsScreen
 import com.muneeb.homesafe.feature.companions.ContactDetailsScreen
 import com.muneeb.homesafe.feature.home.HomeScreen
+import com.muneeb.homesafe.feature.join.EnterOutingCodeScreen
+import com.muneeb.homesafe.feature.join.JoinConfirmationScreen
+import com.muneeb.homesafe.feature.join.ScanQrScreen
 import com.muneeb.homesafe.feature.journeys.JourneyDetailsScreen
 import com.muneeb.homesafe.feature.journeys.JourneysScreen
 import com.muneeb.homesafe.feature.outing.ActiveOutingScreen
+import com.muneeb.homesafe.feature.outing.ArrivalConfirmationScreen
 import com.muneeb.homesafe.feature.outing.InviteCompanionsScreen
+import com.muneeb.homesafe.feature.outing.JoinedOutingScreen
 import com.muneeb.homesafe.feature.outing.StartOutingScreen
 import com.muneeb.homesafe.feature.profile.EditProfileScreen
 import com.muneeb.homesafe.feature.profile.ProfileScreen
@@ -29,6 +34,11 @@ const val ALERTS_ROUTE = "alerts"
 const val START_OUTING_ROUTE = "start_outing"
 const val INVITE_COMPANIONS_ROUTE = "invite_companions"
 const val ACTIVE_OUTING_ROUTE = "active_outing"
+const val SCAN_QR_ROUTE = "scan_qr"
+const val ENTER_OUTING_CODE_ROUTE = "enter_outing_code"
+const val JOIN_CONFIRMATION_ROUTE = "join_confirmation"
+const val JOINED_OUTING_ROUTE = "joined_outing"
+const val ARRIVAL_CONFIRMATION_ROUTE = "arrival_confirmation"
 const val JOURNEY_DETAILS_ROUTE = "journey_details"
 const val CONTACT_DETAILS_ROUTE = "contact_details"
 const val ADD_TRUSTED_CONTACT_ROUTE = "add_trusted_contact"
@@ -49,6 +59,8 @@ fun HomeSafeNavHost(
         composable(TopLevelDestination.HOME.route) {
             HomeScreen(
                 onStartOutingClick = { navController.navigate(START_OUTING_ROUTE) },
+                onScanQrClick = { navController.navigate(SCAN_QR_ROUTE) },
+                onEnterCodeClick = { navController.navigate(ENTER_OUTING_CODE_ROUTE) },
                 onNotificationsClick = { navController.navigate(ALERTS_ROUTE) },
                 onProfileClick = { navController.navigate(TopLevelDestination.PROFILE.route) },
                 onViewAllJourneysClick = { navController.navigate(TopLevelDestination.JOURNEYS.route) }
@@ -137,9 +149,75 @@ fun HomeSafeNavHost(
                 onBackClick = { navController.popBackStack() },
                 onManageCompanionsClick = {},
                 onMoreOptionsClick = {},
-                onHeadingHomeClick = {},
+                onHeadingHomeClick = { navController.navigate(ARRIVAL_CONFIRMATION_ROUTE) },
                 onShareClick = {},
-                onEndOutingClick = {}
+                onEndOutingClick = {
+                    navController.navigate(TopLevelDestination.HOME.route) {
+                        popUpTo(TopLevelDestination.HOME.route) { inclusive = false }
+                    }
+                }
+            )
+        }
+        composable(SCAN_QR_ROUTE) {
+            ScanQrScreen(
+                onCloseClick = { navController.popBackStack() },
+                onEnterCodeClick = { navController.navigate(ENTER_OUTING_CODE_ROUTE) }
+            )
+        }
+        composable(ENTER_OUTING_CODE_ROUTE) {
+            EnterOutingCodeScreen(
+                onBackClick = { navController.popBackStack() },
+                onFindOutingClick = { navController.navigate(JOIN_CONFIRMATION_ROUTE) },
+                onScanQrClick = { navController.navigate(SCAN_QR_ROUTE) }
+            )
+        }
+        composable(JOIN_CONFIRMATION_ROUTE) {
+            JoinConfirmationScreen(
+                onCloseClick = {
+                    navController.navigate(TopLevelDestination.HOME.route) {
+                        popUpTo(TopLevelDestination.HOME.route) { inclusive = false }
+                    }
+                },
+                onChangeHomeZoneClick = {},
+                onJoinOutingClick = {
+                    navController.navigate(JOINED_OUTING_ROUTE) {
+                        popUpTo(TopLevelDestination.HOME.route) { inclusive = false }
+                    }
+                },
+                onDeclineClick = {
+                    navController.navigate(TopLevelDestination.HOME.route) {
+                        popUpTo(TopLevelDestination.HOME.route) { inclusive = false }
+                    }
+                }
+            )
+        }
+        composable(JOINED_OUTING_ROUTE) {
+            JoinedOutingScreen(
+                onBackClick = { navController.popBackStack() },
+                onMoreOptionsClick = {},
+                onHeadingHomeClick = { navController.navigate(ARRIVAL_CONFIRMATION_ROUTE) },
+                onLeaveOutingConfirmed = {
+                    navController.navigate(TopLevelDestination.HOME.route) {
+                        popUpTo(TopLevelDestination.HOME.route) { inclusive = false }
+                    }
+                }
+            )
+        }
+        composable(ARRIVAL_CONFIRMATION_ROUTE) {
+            ArrivalConfirmationScreen(
+                onCloseClick = {
+                    navController.navigate(TopLevelDestination.HOME.route) {
+                        popUpTo(TopLevelDestination.HOME.route) { inclusive = false }
+                    }
+                },
+                onDoneClick = {
+                    navController.navigate(TopLevelDestination.HOME.route) {
+                        popUpTo(TopLevelDestination.HOME.route) { inclusive = false }
+                    }
+                },
+                onViewJourneyClick = {
+                    navController.navigate("$JOURNEY_DETAILS_ROUTE/sample")
+                }
             )
         }
     }
