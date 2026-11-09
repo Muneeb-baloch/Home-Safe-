@@ -141,13 +141,30 @@ Arrival flow: geofence ENTER → validate there's an active journey → mark ARR
 - Keep code simple and readable. Do NOT add code comments.
 - Never add "Co-Authored-By" or "Generated with Claude" lines to commit messages or PRs.
 
-## Current phase: UI only
+## Current phase: business logic (fast MVP pass)
 
-Build screens and navigation only. No permissions, Firebase, DataStore, geofencing or networking until I say so. Use sample data from the design HTML and empty lambdas for actions, so logic can be plugged in later without changing the UI.
+The UI-only phase is done. We are now wiring up the real outing/arrival loop, staged into milestones below. Each milestone must build (`./gradlew assembleDebug`) and be verified before moving to the next.
 
-## Current priority (MVP)
+**Intentional, temporary divergences from the sections above** — restore these in a later pass once this loop is proven:
 
-1. Setup flow + Set home location + geofence registration ← now
+| Section above says | This pass does instead | Why |
+|---|---|---|
+| Firebase Auth | Locally-generated stub UUID (DataStore), behind one `UserIdentityProvider` interface | Move fast now; swapping in real Auth later is a small change, not a rewrite |
+| GeofencingClient for arrival detection | Manual "Heading home" button writes `ARRIVED` to Firestore directly | Prove the notification pipeline before tackling geofencing (flaky to test, needs a real home location first) |
+| Cloud Functions | Cloudflare Worker (free plan) — re-validates the journey against Firestore with its own service-account credentials before sending, so it's safe without real Auth | Blaze billing activation isn't going through; Workers avoid the card entirely |
+| Google Maps for home location, CameraX/ML Kit QR | Both stay decorative/sample for now | Out of scope for this pass |
+
+Full milestone plan (see `/Users/muneebbaloch/.claude/plans/tell-me-ffrom-where-immutable-moth.md` for complete file-level detail):
+
+- [x] **M1 — Foundational plumbing.** Hilt DI, domain models (`JourneyStatus`, `OutingStatus`, `User`, `Outing`, `Journey`, `TrustedContact`), stub identity (`UserIdentityProvider` + DataStore), Firestore repositories (`UserRepository`, `OutingRepository`, `JourneyRepository`), `ProfileViewModel` wired to real `users/{uid}.name`.
+- [ ] **M2 — Start Outing.** Real Firestore writes (`outings/{id}`, `journeys/{id}`) from `StartOutingScreen`; `ActiveOutingScreen` goes live via snapshot listeners.
+- [ ] **M3 — Join by code.** Real lookup-by-code + join flow (`EnterOutingCodeScreen`, `JoinConfirmationScreen`); `JoinedOutingScreen` goes live.
+- [ ] **M4 — Manual arrival → Cloudflare Worker → FCM → client receives it.** `ArrivalConfirmationScreen` writes `ARRIVED` + calls the Worker; `HomeSafeMessagingService` handles FCM token/receive; `AlertsScreen` goes live; Worker project at `worker/` resolves companions, sends FCM, writes `notifications/{id}`.
+- [ ] **M5 — Minimal Firestore security rules.** Field-shape allowlist (reject any `lat`/`lng`/`location` field on `journeys`/`outings`), `notifications` writes rejected from clients (Worker's service account bypasses rules).
+
+## Original priority order (for after this pass)
+
+1. Setup flow + Set home location + geofence registration
 2. Start an outing (code/QR) + Active outing
 3. Arrival detection → Firestore → Cloud Function → FCM push
 4. Join flow (scan QR, enter code, confirm, friend view)

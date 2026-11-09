@@ -4,8 +4,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -28,7 +31,7 @@ import com.muneeb.homesafe.feature.outing.JoinedOutingScreen
 import com.muneeb.homesafe.feature.outing.StartOutingScreen
 import com.muneeb.homesafe.feature.profile.EditProfileScreen
 import com.muneeb.homesafe.feature.profile.ProfileScreen
-import com.muneeb.homesafe.feature.profile.ProfileUiState
+import com.muneeb.homesafe.feature.profile.ProfileViewModel
 
 const val ALERTS_ROUTE = "alerts"
 const val START_OUTING_ROUTE = "start_outing"
@@ -116,10 +119,15 @@ fun HomeSafeNavHost(
             )
         }
         composable(EDIT_PROFILE_ROUTE) {
+            val viewModel: ProfileViewModel = hiltViewModel()
+            val uiState by viewModel.uiState.collectAsState()
             EditProfileScreen(
-                uiState = ProfileUiState(),
+                uiState = uiState,
                 onBackClick = { navController.popBackStack() },
-                onSaveClick = { _, _, _ -> navController.popBackStack() }
+                onSaveClick = { name, _, _ ->
+                    viewModel.saveProfile(name)
+                    navController.popBackStack()
+                }
             )
         }
         composable(ALERTS_ROUTE) {
