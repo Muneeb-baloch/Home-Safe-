@@ -45,6 +45,7 @@ import com.muneeb.homesafe.R
 import com.muneeb.homesafe.core.designsystem.theme.Border
 import com.muneeb.homesafe.core.designsystem.theme.BrandTint
 import com.muneeb.homesafe.core.designsystem.theme.DeepTeal
+import com.muneeb.homesafe.core.designsystem.theme.DestructiveRed
 import com.muneeb.homesafe.core.designsystem.theme.Divider
 import com.muneeb.homesafe.core.designsystem.theme.Faint
 import com.muneeb.homesafe.core.designsystem.theme.HomeSafeTheme
@@ -72,7 +73,8 @@ fun StartOutingScreen(
     onBackClick: () -> Unit,
     onAddTrustedContactClick: () -> Unit,
     onStartOutingClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    uiState: StartOutingUiState = StartOutingUiState()
 ) {
     var outingName by remember { mutableStateOf("Friday Night Out") }
     val trustedContacts = remember {
@@ -109,6 +111,7 @@ fun StartOutingScreen(
                 HomeSafePrimaryButton(
                     text = stringResource(R.string.outing_start_button),
                     onClick = onStartOutingClick,
+                    enabled = !uiState.isStarting,
                     icon = {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_walking),
@@ -117,6 +120,16 @@ fun StartOutingScreen(
                         )
                     }
                 )
+
+                if (uiState.error != null) {
+                    Text(
+                        text = uiState.error,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Normal,
+                        color = DestructiveRed,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),

@@ -98,8 +98,12 @@
     <string name="outing_step_started">Started</string>
     <string name="outing_step_out">Out</string>
     <string name="outing_step_home">Home</string>
+    <string name="active_outing_code_label">Outing code</string>
     <string name="outing_manage_button">Manage</string>
     <string name="outing_notified_on_arrival">Notified on arrival</string>
+    <string name="outing_no_companions_yet">Share your code so friends can join this outing.</string>
+    <string name="generic_companion_name">Companion</string>
+    <string name="generic_someone_name">Someone</string>
     <string name="outing_heading_home_button">I\'m heading home</string>
     <string name="outing_share_button">Share</string>
     <string name="outing_end_outing_button">End outing</string>
@@ -123,10 +127,10 @@
     <string name="enter_code_hint">Codes aren\'t case-sensitive and stop working when the outing ends.</string>
     <string name="enter_code_find_outing_button">Find outing</string>
     <string name="enter_code_scan_qr_instead">Scan QR instead</string>
+    <string name="enter_code_not_found_error">Couldn\'t find that outing. Check the code and try again.</string>
 
     <!-- Join · Confirmation -->
-    <string name="join_confirm_invited_by_format">%1$s invited you to</string>
-    <string name="join_confirm_outing_name_sample">Friday Night Out</string>
+    <string name="join_confirm_invited_by_format">%1$s invited you to join their outing</string>
     <string name="join_confirm_members_format">%1$s · since %2$s</string>
     <string name="join_confirm_what_they_see_title">What they\'ll see</string>
     <string name="join_confirm_info_arrival_title">When you reach home</string>
@@ -140,12 +144,17 @@
     <string name="join_confirm_change_label">Change</string>
     <string name="join_confirm_join_button">Join outing</string>
     <string name="join_confirm_decline_button">Decline</string>
+    <string name="join_confirm_error">Couldn\'t join this outing. Try again.</string>
 
     <!-- Outing · Joined outing (friend view) -->
     <string name="joined_outing_pill_sample">Joined · 8:14 PM</string>
     <string name="joined_outing_youre_out_subtitle">Muneeb, Ahmed and Ali will know when you\'re home. Enjoy your night.</string>
     <string name="joined_outing_step_joined">Joined</string>
     <string name="joined_outing_status_out">Out</string>
+    <string name="joined_outing_companion_started">Started the outing</string>
+    <string name="joined_outing_companion_joined_format">Joined %1$s</string>
+    <string name="joined_outing_companion_arrived_format">Arrived %1$s</string>
+    <string name="joined_outing_no_companions_yet">You\'re the only one here so far.</string>
     <string name="joined_outing_leave_button">Leave outing</string>
     <string name="leave_outing_sheet_title">Leave Friday Night Out?</string>
     <string name="leave_outing_sheet_body">Muneeb, Ahmed and Ali won\'t be notified when you get home. You can rejoin with the code while the outing is active.</string>

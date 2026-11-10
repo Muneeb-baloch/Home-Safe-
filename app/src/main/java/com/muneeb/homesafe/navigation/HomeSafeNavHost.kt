@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -20,15 +21,20 @@ import com.muneeb.homesafe.feature.companions.CompanionsScreen
 import com.muneeb.homesafe.feature.companions.ContactDetailsScreen
 import com.muneeb.homesafe.feature.home.HomeScreen
 import com.muneeb.homesafe.feature.join.EnterOutingCodeScreen
+import com.muneeb.homesafe.feature.join.EnterOutingCodeViewModel
 import com.muneeb.homesafe.feature.join.JoinConfirmationScreen
+import com.muneeb.homesafe.feature.join.JoinConfirmationViewModel
 import com.muneeb.homesafe.feature.join.ScanQrScreen
 import com.muneeb.homesafe.feature.journeys.JourneyDetailsScreen
 import com.muneeb.homesafe.feature.journeys.JourneysScreen
 import com.muneeb.homesafe.feature.outing.ActiveOutingScreen
+import com.muneeb.homesafe.feature.outing.ActiveOutingViewModel
 import com.muneeb.homesafe.feature.outing.ArrivalConfirmationScreen
 import com.muneeb.homesafe.feature.outing.InviteCompanionsScreen
 import com.muneeb.homesafe.feature.outing.JoinedOutingScreen
+import com.muneeb.homesafe.feature.outing.JoinedOutingViewModel
 import com.muneeb.homesafe.feature.outing.StartOutingScreen
+import com.muneeb.homesafe.feature.outing.StartOutingViewModel
 import com.muneeb.homesafe.feature.profile.EditProfileScreen
 import com.muneeb.homesafe.feature.profile.ProfileScreen
 import com.muneeb.homesafe.feature.profile.ProfileViewModel
@@ -48,6 +54,7 @@ const val ADD_TRUSTED_CONTACT_ROUTE = "add_trusted_contact"
 const val EDIT_PROFILE_ROUTE = "edit_profile"
 private const val JOURNEY_ID_ARG = "journeyId"
 private const val CONTACT_ID_ARG = "contactId"
+private const val OUTING_ID_ARG = "outingId"
 
 @Composable
 fun HomeSafeNavHost(
@@ -136,14 +143,20 @@ fun HomeSafeNavHost(
             )
         }
         composable(START_OUTING_ROUTE) {
-            StartOutingScreen(
-                onBackClick = { navController.popBackStack() },
-                onAddTrustedContactClick = { navController.navigate(ADD_TRUSTED_CONTACT_ROUTE) },
-                onStartOutingClick = {
-                    navController.navigate(ACTIVE_OUTING_ROUTE) {
+            val viewModel: StartOutingViewModel = hiltViewModel()
+            val uiState by viewModel.uiState.collectAsState()
+            LaunchedEffect(uiState.createdOutingId) {
+                uiState.createdOutingId?.let { outingId ->
+                    navController.navigate("$ACTIVE_OUTING_ROUTE/$outingId") {
                         popUpTo(TopLevelDestination.HOME.route) { inclusive = false }
                     }
                 }
+            }
+            StartOutingScreen(
+                uiState = uiState,
+                onBackClick = { navController.popBackStack() },
+                onAddTrustedContactClick = { navController.navigate(ADD_TRUSTED_CONTACT_ROUTE) },
+                onStartOutingClick = { viewModel.startOuting() }
             )
         }
         composable(INVITE_COMPANIONS_ROUTE) {
@@ -152,8 +165,14 @@ fun HomeSafeNavHost(
                 onAddCompanionsClick = { navController.popBackStack() }
             )
         }
-        composable(ACTIVE_OUTING_ROUTE) {
+        composable(
+            route = "$ACTIVE_OUTING_ROUTE/{$OUTING_ID_ARG}",
+            arguments = listOf(navArgument(OUTING_ID_ARG) { type = NavType.StringType })
+        ) {
+            val viewModel: ActiveOutingViewModel = hiltViewModel()
+            val uiState by viewModel.uiState.collectAsState()
             ActiveOutingScreen(
+                uiState = uiState,
                 onBackClick = { navController.popBackStack() },
                 onManageCompanionsClick = {},
                 onMoreOptionsClick = {},
@@ -173,25 +192,44 @@ fun HomeSafeNavHost(
             )
         }
         composable(ENTER_OUTING_CODE_ROUTE) {
+            val viewModel: EnterOutingCodeViewModel = hiltViewModel()
+            val uiState by viewModel.uiState.collectAsState()
+            LaunchedEffect(uiState.foundOutingId) {
+                uiState.foundOutingId?.let { outingId ->
+                    navController.navigate("$JOIN_CONFIRMATION_ROUTE/$outingId")
+                }
+            }
             EnterOutingCodeScreen(
+                uiState = uiState,
+                onCodeChange = viewModel::onCodeChange,
                 onBackClick = { navController.popBackStack() },
-                onFindOutingClick = { navController.navigate(JOIN_CONFIRMATION_ROUTE) },
+                onFindOutingClick = { viewModel.findOuting() },
                 onScanQrClick = { navController.navigate(SCAN_QR_ROUTE) }
             )
         }
-        composable(JOIN_CONFIRMATION_ROUTE) {
+        composable(
+            route = "$JOIN_CONFIRMATION_ROUTE/{$OUTING_ID_ARG}",
+            arguments = listOf(navArgument(OUTING_ID_ARG) { type = NavType.StringType })
+        ) { backStackEntry ->
+            val outingId = backStackEntry.arguments?.getString(OUTING_ID_ARG).orEmpty()
+            val viewModel: JoinConfirmationViewModel = hiltViewModel()
+            val uiState by viewModel.uiState.collectAsState()
+            LaunchedEffect(uiState.joined) {
+                if (uiState.joined) {
+                    navController.navigate("$JOINED_OUTING_ROUTE/$outingId") {
+                        popUpTo(TopLevelDestination.HOME.route) { inclusive = false }
+                    }
+                }
+            }
             JoinConfirmationScreen(
+                uiState = uiState,
                 onCloseClick = {
                     navController.navigate(TopLevelDestination.HOME.route) {
                         popUpTo(TopLevelDestination.HOME.route) { inclusive = false }
                     }
                 },
                 onChangeHomeZoneClick = {},
-                onJoinOutingClick = {
-                    navController.navigate(JOINED_OUTING_ROUTE) {
-                        popUpTo(TopLevelDestination.HOME.route) { inclusive = false }
-                    }
-                },
+                onJoinOutingClick = { viewModel.joinOuting() },
                 onDeclineClick = {
                     navController.navigate(TopLevelDestination.HOME.route) {
                         popUpTo(TopLevelDestination.HOME.route) { inclusive = false }
@@ -199,8 +237,14 @@ fun HomeSafeNavHost(
                 }
             )
         }
-        composable(JOINED_OUTING_ROUTE) {
+        composable(
+            route = "$JOINED_OUTING_ROUTE/{$OUTING_ID_ARG}",
+            arguments = listOf(navArgument(OUTING_ID_ARG) { type = NavType.StringType })
+        ) {
+            val viewModel: JoinedOutingViewModel = hiltViewModel()
+            val uiState by viewModel.uiState.collectAsState()
             JoinedOutingScreen(
+                uiState = uiState,
                 onBackClick = { navController.popBackStack() },
                 onMoreOptionsClick = {},
                 onHeadingHomeClick = { navController.navigate(ARRIVAL_CONFIRMATION_ROUTE) },

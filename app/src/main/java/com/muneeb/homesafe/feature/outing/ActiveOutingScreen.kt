@@ -46,8 +46,10 @@ import com.muneeb.homesafe.core.designsystem.theme.Ink
 import com.muneeb.homesafe.core.designsystem.theme.PillDotGreen
 import com.muneeb.homesafe.core.designsystem.theme.PureWhite
 import com.muneeb.homesafe.core.designsystem.theme.Subtle
+import com.muneeb.homesafe.domain.model.JourneyStatus
 import com.muneeb.homesafe.ui.components.Avatar
 import com.muneeb.homesafe.ui.components.CircleIconButton
+import com.muneeb.homesafe.ui.components.CodeBox
 import com.muneeb.homesafe.ui.components.ConfirmActionSheet
 import com.muneeb.homesafe.ui.components.HomeSafeOutlineButton
 import com.muneeb.homesafe.ui.components.HomeSafePrimaryButton
@@ -67,7 +69,8 @@ fun ActiveOutingScreen(
     onHeadingHomeClick: () -> Unit,
     onShareClick: () -> Unit,
     onEndOutingClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    uiState: ActiveOutingUiState = ActiveOutingUiState()
 ) {
     var showEndSheet by remember { mutableStateOf(false) }
 
@@ -168,20 +171,30 @@ fun ActiveOutingScreen(
         ) {
             ActiveOutingHero()
 
-            JourneyStepper(
-                steps = listOf(
-                    JourneyStep(stringResource(R.string.outing_step_started), JourneyStepState.DONE, R.drawable.ic_check),
-                    JourneyStep(stringResource(R.string.outing_step_out), JourneyStepState.CURRENT, R.drawable.ic_walking),
-                    JourneyStep(stringResource(R.string.outing_step_home), JourneyStepState.PENDING, R.drawable.ic_home_stroke)
+            JourneyStepper(steps = journeyStepsFor(uiState.journeyStatus))
+
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(
+                    text = stringResource(R.string.active_outing_code_label),
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = Ink
                 )
-            )
+                CodeBox(
+                    code = uiState.outingCode,
+                    onQrClick = {},
+                    onShareClick = onShareClick,
+                    qrContentDescription = stringResource(R.string.cd_qr_code),
+                    shareContentDescription = stringResource(R.string.cd_share_code)
+                )
+            }
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = stringResource(R.string.outing_companions_count_format, 3),
+                    text = stringResource(R.string.outing_companions_count_format, uiState.companions.size),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Medium,
                     color = Ink,
@@ -204,27 +217,40 @@ fun ActiveOutingScreen(
                     .padding(horizontal = 16.dp, vertical = 14.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    Avatar(initial = "A", size = 32.dp)
-                    Avatar(initial = "A", size = 32.dp)
-                    Avatar(initial = "H", size = 32.dp)
+                if (uiState.companions.isEmpty()) {
+                    Text(
+                        text = stringResource(R.string.outing_no_companions_yet),
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Normal,
+                        color = Subtle,
+                        modifier = Modifier.weight(1f)
+                    )
+                } else {
+                    val companionNames = uiState.companions.map {
+                        it.name.ifBlank { stringResource(R.string.generic_companion_name) }
+                    }
+                    Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                        companionNames.take(3).forEach { name ->
+                            Avatar(initial = name.take(1).uppercase(), size = 32.dp)
+                        }
+                    }
+                    Spacer(modifier = Modifier.width(6.dp))
+                    Text(
+                        text = companionNames.joinToString(", "),
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Normal,
+                        color = Subtle,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Text(
+                        text = stringResource(R.string.outing_notified_on_arrival),
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Normal,
+                        color = Subtle
+                    )
                 }
-                Spacer(modifier = Modifier.width(6.dp))
-                Text(
-                    text = "Ahmed, Ali, Hamza",
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Normal,
-                    color = Subtle,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.weight(1f)
-                )
-                Text(
-                    text = stringResource(R.string.outing_notified_on_arrival),
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Normal,
-                    color = Subtle
-                )
             }
         }
     }
@@ -243,6 +269,24 @@ fun ActiveOutingScreen(
             onDismiss = { showEndSheet = false }
         )
     }
+}
+
+@Composable
+private fun journeyStepsFor(status: JourneyStatus): List<JourneyStep> {
+    val arrived = status == JourneyStatus.ARRIVED || status == JourneyStatus.COMPLETED
+    return listOf(
+        JourneyStep(stringResource(R.string.outing_step_started), JourneyStepState.DONE, R.drawable.ic_check),
+        JourneyStep(
+            stringResource(R.string.outing_step_out),
+            if (arrived) JourneyStepState.DONE else JourneyStepState.CURRENT,
+            R.drawable.ic_walking
+        ),
+        JourneyStep(
+            stringResource(R.string.outing_step_home),
+            if (arrived) JourneyStepState.DONE else JourneyStepState.PENDING,
+            R.drawable.ic_home_stroke
+        )
+    )
 }
 
 @Composable
@@ -298,7 +342,16 @@ private fun ActiveOutingScreenPreview() {
             onMoreOptionsClick = {},
             onHeadingHomeClick = {},
             onShareClick = {},
-            onEndOutingClick = {}
+            onEndOutingClick = {},
+            uiState = ActiveOutingUiState(
+                outingCode = "7K4P",
+                journeyStatus = JourneyStatus.OUT,
+                companions = listOf(
+                    OutingCompanionUi(uid = "1", name = "Ahmed"),
+                    OutingCompanionUi(uid = "2", name = "Ali"),
+                    OutingCompanionUi(uid = "3", name = "Hamza")
+                )
+            )
         )
     }
 }

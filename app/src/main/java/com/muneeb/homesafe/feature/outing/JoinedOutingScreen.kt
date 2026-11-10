@@ -47,6 +47,7 @@ import com.muneeb.homesafe.core.designsystem.theme.Ink
 import com.muneeb.homesafe.core.designsystem.theme.PillDotGreen
 import com.muneeb.homesafe.core.designsystem.theme.PureWhite
 import com.muneeb.homesafe.core.designsystem.theme.Subtle
+import com.muneeb.homesafe.domain.model.JourneyStatus
 import com.muneeb.homesafe.ui.components.Avatar
 import com.muneeb.homesafe.ui.components.CircleIconButton
 import com.muneeb.homesafe.ui.components.ConfirmActionSheet
@@ -59,15 +60,6 @@ import com.muneeb.homesafe.ui.components.JourneyStepState
 import com.muneeb.homesafe.ui.components.JourneyStepper
 import com.muneeb.homesafe.ui.components.Pill
 
-private enum class CompanionStatus { OUT, HOME }
-
-private data class JoinedCompanion(
-    val initial: String,
-    val name: String,
-    val subtitle: String,
-    val status: CompanionStatus
-)
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun JoinedOutingScreen(
@@ -75,16 +67,10 @@ fun JoinedOutingScreen(
     onMoreOptionsClick: () -> Unit,
     onHeadingHomeClick: () -> Unit,
     onLeaveOutingConfirmed: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    uiState: JoinedOutingUiState = JoinedOutingUiState()
 ) {
     var showLeaveSheet by remember { mutableStateOf(false) }
-    val companions = remember {
-        listOf(
-            JoinedCompanion("M", "Muneeb", "Started the outing", CompanionStatus.OUT),
-            JoinedCompanion("A", "Ahmed", "Joined 8:05 PM", CompanionStatus.OUT),
-            JoinedCompanion("A", "Ali", "Arrived 11:02 PM", CompanionStatus.HOME)
-        )
-    }
 
     HomeSafeScreen(
         modifier = modifier,
@@ -166,32 +152,40 @@ fun JoinedOutingScreen(
         ) {
             JoinedOutingHero()
 
-            JourneyStepper(
-                steps = listOf(
-                    JourneyStep(stringResource(R.string.joined_outing_step_joined), JourneyStepState.DONE, R.drawable.ic_check),
-                    JourneyStep(stringResource(R.string.outing_step_out), JourneyStepState.CURRENT, R.drawable.ic_walking),
-                    JourneyStep(stringResource(R.string.outing_step_home), JourneyStepState.PENDING, R.drawable.ic_home_stroke)
-                )
-            )
+            JourneyStepper(steps = joinedJourneyStepsFor(uiState.journeyStatus))
 
             Text(
-                text = stringResource(R.string.outing_companions_count_format, companions.size),
+                text = stringResource(R.string.outing_companions_count_format, uiState.companions.size),
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Medium,
                 color = Ink
             )
 
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(20.dp))
-                    .background(PureWhite)
-                    .padding(horizontal = 16.dp)
-            ) {
-                companions.forEachIndexed { index, companion ->
-                    CompanionStatusRow(companion = companion)
-                    if (index != companions.lastIndex) {
-                        HorizontalDivider(color = Divider, thickness = 1.dp)
+            if (uiState.companions.isEmpty()) {
+                Text(
+                    text = stringResource(R.string.joined_outing_no_companions_yet),
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = Subtle,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(PureWhite)
+                        .padding(16.dp)
+                )
+            } else {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(PureWhite)
+                        .padding(horizontal = 16.dp)
+                ) {
+                    uiState.companions.forEachIndexed { index, companion ->
+                        CompanionStatusRow(companion = companion)
+                        if (index != uiState.companions.lastIndex) {
+                            HorizontalDivider(color = Divider, thickness = 1.dp)
+                        }
                     }
                 }
             }
@@ -215,10 +209,35 @@ fun JoinedOutingScreen(
 }
 
 @Composable
+private fun joinedJourneyStepsFor(status: JourneyStatus): List<JourneyStep> {
+    val arrived = status == JourneyStatus.ARRIVED || status == JourneyStatus.COMPLETED
+    return listOf(
+        JourneyStep(stringResource(R.string.joined_outing_step_joined), JourneyStepState.DONE, R.drawable.ic_check),
+        JourneyStep(
+            stringResource(R.string.outing_step_out),
+            if (arrived) JourneyStepState.DONE else JourneyStepState.CURRENT,
+            R.drawable.ic_walking
+        ),
+        JourneyStep(
+            stringResource(R.string.outing_step_home),
+            if (arrived) JourneyStepState.DONE else JourneyStepState.PENDING,
+            R.drawable.ic_home_stroke
+        )
+    )
+}
+
+@Composable
 private fun CompanionStatusRow(
-    companion: JoinedCompanion,
+    companion: JoinedCompanionUi,
     modifier: Modifier = Modifier
 ) {
+    val displayName = companion.name.ifBlank { stringResource(R.string.generic_companion_name) }
+    val subtitle = when (companion.subtitleKind) {
+        CompanionSubtitleKind.STARTED -> stringResource(R.string.joined_outing_companion_started)
+        CompanionSubtitleKind.JOINED -> stringResource(R.string.joined_outing_companion_joined_format, companion.subtitleTime)
+        CompanionSubtitleKind.ARRIVED -> stringResource(R.string.joined_outing_companion_arrived_format, companion.subtitleTime)
+    }
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -226,38 +245,23 @@ private fun CompanionStatusRow(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Avatar(initial = companion.initial)
+        Avatar(initial = displayName.take(1).uppercase())
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = companion.name,
+                text = displayName,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Medium,
                 color = Ink
             )
             Text(
-                text = companion.subtitle,
+                text = subtitle,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Normal,
                 color = Subtle
             )
         }
-        when (companion.status) {
-            CompanionStatus.OUT -> Row(verticalAlignment = Alignment.CenterVertically) {
-                Box(
-                    modifier = Modifier
-                        .size(7.dp)
-                        .clip(CircleShape)
-                        .background(Amber)
-                )
-                Spacer(modifier = Modifier.width(6.dp))
-                Text(
-                    text = stringResource(R.string.joined_outing_status_out),
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = Amber
-                )
-            }
-            CompanionStatus.HOME -> Row(verticalAlignment = Alignment.CenterVertically) {
+        if (companion.arrived) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_check),
                     contentDescription = null,
@@ -270,6 +274,22 @@ private fun CompanionStatusRow(
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Medium,
                     color = DeepTeal
+                )
+            }
+        } else {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Box(
+                    modifier = Modifier
+                        .size(7.dp)
+                        .clip(CircleShape)
+                        .background(Amber)
+                )
+                Spacer(modifier = Modifier.width(6.dp))
+                Text(
+                    text = stringResource(R.string.joined_outing_status_out),
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = Amber
                 )
             }
         }
@@ -327,7 +347,15 @@ private fun JoinedOutingScreenPreview() {
             onBackClick = {},
             onMoreOptionsClick = {},
             onHeadingHomeClick = {},
-            onLeaveOutingConfirmed = {}
+            onLeaveOutingConfirmed = {},
+            uiState = JoinedOutingUiState(
+                journeyStatus = JourneyStatus.OUT,
+                companions = listOf(
+                    JoinedCompanionUi("1", "Muneeb", CompanionSubtitleKind.STARTED, "", arrived = false),
+                    JoinedCompanionUi("2", "Ahmed", CompanionSubtitleKind.JOINED, "8:05 PM", arrived = false),
+                    JoinedCompanionUi("3", "Ali", CompanionSubtitleKind.ARRIVED, "11:02 PM", arrived = true)
+                )
+            )
         )
     }
 }

@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.muneeb.homesafe.R
 import com.muneeb.homesafe.core.designsystem.theme.DeepTeal
+import com.muneeb.homesafe.core.designsystem.theme.DestructiveRed
 import com.muneeb.homesafe.core.designsystem.theme.Faint
 import com.muneeb.homesafe.core.designsystem.theme.HomeSafeTheme
 import com.muneeb.homesafe.core.designsystem.theme.Ink
@@ -46,7 +47,8 @@ fun JoinConfirmationScreen(
     onChangeHomeZoneClick: () -> Unit,
     onJoinOutingClick: () -> Unit,
     onDeclineClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    uiState: JoinConfirmationUiState = JoinConfirmationUiState()
 ) {
     val infoRows = listOf(
         JoinInfoRow(
@@ -88,9 +90,20 @@ fun JoinConfirmationScreen(
                     .padding(start = 20.dp, top = 16.dp, end = 20.dp, bottom = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(14.dp)
             ) {
+                if (uiState.error) {
+                    Text(
+                        text = stringResource(R.string.join_confirm_error),
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Normal,
+                        color = DestructiveRed,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
                 HomeSafePrimaryButton(
                     text = stringResource(R.string.join_confirm_join_button),
-                    onClick = onJoinOutingClick
+                    onClick = onJoinOutingClick,
+                    enabled = !uiState.isJoining
                 )
                 Text(
                     text = stringResource(R.string.join_confirm_decline_button),
@@ -119,18 +132,17 @@ fun JoinConfirmationScreen(
                     verticalArrangement = Arrangement.spacedBy(6.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Avatar(initial = "M", size = 56.dp, fontSize = 20.sp)
+                    val invitedByName = uiState.invitedByName.ifBlank { stringResource(R.string.generic_someone_name) }
+                    val memberNames = uiState.memberNames.map {
+                        it.ifBlank { stringResource(R.string.generic_companion_name) }
+                    }
+
+                    Avatar(initial = invitedByName.take(1).uppercase(), size = 56.dp, fontSize = 20.sp)
                     Text(
-                        text = stringResource(R.string.join_confirm_invited_by_format, "Muneeb"),
+                        text = stringResource(R.string.join_confirm_invited_by_format, invitedByName),
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Normal,
                         color = Subtle
-                    )
-                    Text(
-                        text = stringResource(R.string.join_confirm_outing_name_sample),
-                        fontSize = 22.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = Ink
                     )
 
                     Row(
@@ -139,11 +151,16 @@ fun JoinConfirmationScreen(
                         modifier = Modifier.padding(top = 4.dp)
                     ) {
                         Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                            Avatar(initial = "M", size = 24.dp, fontSize = 10.sp)
-                            Avatar(initial = "A", size = 24.dp, fontSize = 10.sp)
+                            memberNames.take(2).forEach { name ->
+                                Avatar(initial = name.take(1).uppercase(), size = 24.dp, fontSize = 10.sp)
+                            }
                         }
                         Text(
-                            text = stringResource(R.string.join_confirm_members_format, "Muneeb, Ahmed, Ali", "8:00 PM"),
+                            text = stringResource(
+                                R.string.join_confirm_members_format,
+                                memberNames.joinToString(", "),
+                                uiState.startedAtLabel
+                            ),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Normal,
                             color = Subtle
@@ -232,7 +249,12 @@ private fun JoinConfirmationScreenPreview() {
             onCloseClick = {},
             onChangeHomeZoneClick = {},
             onJoinOutingClick = {},
-            onDeclineClick = {}
+            onDeclineClick = {},
+            uiState = JoinConfirmationUiState(
+                invitedByName = "Muneeb",
+                memberNames = listOf("Muneeb", "Ahmed", "Ali"),
+                startedAtLabel = "8:00 PM"
+            )
         )
     }
 }

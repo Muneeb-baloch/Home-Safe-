@@ -11,10 +11,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import com.muneeb.homesafe.R
 import com.muneeb.homesafe.core.designsystem.theme.BrandTint
 import com.muneeb.homesafe.core.designsystem.theme.DeepTeal
+import com.muneeb.homesafe.core.designsystem.theme.DestructiveRed
 import com.muneeb.homesafe.core.designsystem.theme.HomeSafeTheme
 import com.muneeb.homesafe.core.designsystem.theme.Ink
 import com.muneeb.homesafe.core.designsystem.theme.Muted
@@ -41,10 +38,10 @@ fun EnterOutingCodeScreen(
     onBackClick: () -> Unit,
     onFindOutingClick: () -> Unit,
     onScanQrClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    uiState: EnterOutingCodeUiState = EnterOutingCodeUiState(),
+    onCodeChange: (String) -> Unit = {}
 ) {
-    var code by remember { mutableStateOf("7K4P") }
-
     HomeSafeScreen(
         modifier = modifier,
         topBar = {
@@ -64,7 +61,7 @@ fun EnterOutingCodeScreen(
                 HomeSafePrimaryButton(
                     text = stringResource(R.string.enter_code_find_outing_button),
                     onClick = onFindOutingClick,
-                    enabled = code.length == 4
+                    enabled = uiState.code.length == 4 && !uiState.isSearching
                 )
                 HomeSafeTextButton(
                     text = stringResource(R.string.enter_code_scan_qr_instead),
@@ -96,10 +93,19 @@ fun EnterOutingCodeScreen(
             }
 
             CodeInputBoxes(
-                value = code,
-                onValueChange = { code = it },
-                onDone = { if (code.length == 4) onFindOutingClick() }
+                value = uiState.code,
+                onValueChange = onCodeChange,
+                onDone = { if (uiState.code.length == 4) onFindOutingClick() }
             )
+
+            if (uiState.showError) {
+                Text(
+                    text = stringResource(R.string.enter_code_not_found_error),
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = DestructiveRed
+                )
+            }
 
             Row(
                 modifier = Modifier
