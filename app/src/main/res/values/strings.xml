@@ -162,9 +162,17 @@
 
     <!-- Arrival confirmation -->
     <string name="arrival_title">You\'re home</string>
-    <string name="arrival_subtitle_format">Arrived %1$s · %2$s</string>
+    <string name="arrival_subtitle_format">Arrived %1$s · Code %2$s</string>
     <string name="arrival_companions_notified_format">Companions notified · %1$d</string>
     <string name="arrival_delivered_label">Delivered</string>
+    <string name="arrival_sending_label">Sending…</string>
+
+    <!-- Push notifications -->
+    <string name="notification_channel_arrivals_name">Arrivals</string>
+    <string name="notification_channel_arrivals_description">Alerts when someone from your outing reaches home</string>
+    <string name="notification_arrived_title_format">%1$s reached home safely</string>
+    <string name="notification_arrived_body_format">Arrived at %1$s</string>
+    <string name="notification_arrived_body_generic">Arrived home safely</string>
     <string name="arrival_done_button">Done</string>
     <string name="arrival_view_journey_button">View journey</string>
 
@@ -206,6 +214,13 @@
     <string name="alerts_title">Alerts</string>
     <string name="alerts_empty_title">No alerts yet</string>
     <string name="alerts_empty_subtitle">Arrivals and outing invites will show up here.</string>
+    <string name="alerts_section_new">New</string>
+    <string name="alerts_section_earlier">Earlier</string>
+    <string name="alerts_time_now">now</string>
+    <string name="alerts_time_minutes_ago_format">%1$dm ago</string>
+    <string name="alerts_time_hours_ago_format">%1$dh ago</string>
+    <string name="alerts_time_yesterday">Yesterday</string>
+    <string name="alerts_time_days_ago_format">%1$dd ago</string>
 
     <!-- Companions -->
     <string name="companions_title">Companions</string>

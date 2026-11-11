@@ -1,5 +1,9 @@
 package com.muneeb.homesafe.navigation
 
+import android.Manifest
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -40,9 +44,20 @@ fun HomeSafeApp(
             )
         }
         composable(SETUP_NOTIFICATIONS_ROUTE) {
+            val permissionLauncher = rememberLauncherForActivityResult(
+                ActivityResultContracts.RequestPermission()
+            ) {
+                navController.navigate(SETUP_HOME_LOCATION_ROUTE)
+            }
             SetupNotificationsScreen(
                 onBackClick = { navController.popBackStack() },
-                onTurnOnNotificationsClick = { navController.navigate(SETUP_HOME_LOCATION_ROUTE) },
+                onTurnOnNotificationsClick = {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                    } else {
+                        navController.navigate(SETUP_HOME_LOCATION_ROUTE)
+                    }
+                },
                 onMaybeLaterClick = { navController.navigate(SETUP_HOME_LOCATION_ROUTE) }
             )
         }

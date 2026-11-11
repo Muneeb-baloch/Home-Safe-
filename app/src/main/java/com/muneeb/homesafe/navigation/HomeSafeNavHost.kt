@@ -30,6 +30,7 @@ import com.muneeb.homesafe.feature.journeys.JourneysScreen
 import com.muneeb.homesafe.feature.outing.ActiveOutingScreen
 import com.muneeb.homesafe.feature.outing.ActiveOutingViewModel
 import com.muneeb.homesafe.feature.outing.ArrivalConfirmationScreen
+import com.muneeb.homesafe.feature.outing.ArrivalConfirmationViewModel
 import com.muneeb.homesafe.feature.outing.InviteCompanionsScreen
 import com.muneeb.homesafe.feature.outing.JoinedOutingScreen
 import com.muneeb.homesafe.feature.outing.JoinedOutingViewModel
@@ -168,7 +169,8 @@ fun HomeSafeNavHost(
         composable(
             route = "$ACTIVE_OUTING_ROUTE/{$OUTING_ID_ARG}",
             arguments = listOf(navArgument(OUTING_ID_ARG) { type = NavType.StringType })
-        ) {
+        ) { backStackEntry ->
+            val outingId = backStackEntry.arguments?.getString(OUTING_ID_ARG).orEmpty()
             val viewModel: ActiveOutingViewModel = hiltViewModel()
             val uiState by viewModel.uiState.collectAsState()
             ActiveOutingScreen(
@@ -176,7 +178,7 @@ fun HomeSafeNavHost(
                 onBackClick = { navController.popBackStack() },
                 onManageCompanionsClick = {},
                 onMoreOptionsClick = {},
-                onHeadingHomeClick = { navController.navigate(ARRIVAL_CONFIRMATION_ROUTE) },
+                onHeadingHomeClick = { navController.navigate("$ARRIVAL_CONFIRMATION_ROUTE/$outingId") },
                 onShareClick = {},
                 onEndOutingClick = {
                     navController.navigate(TopLevelDestination.HOME.route) {
@@ -240,14 +242,15 @@ fun HomeSafeNavHost(
         composable(
             route = "$JOINED_OUTING_ROUTE/{$OUTING_ID_ARG}",
             arguments = listOf(navArgument(OUTING_ID_ARG) { type = NavType.StringType })
-        ) {
+        ) { backStackEntry ->
+            val outingId = backStackEntry.arguments?.getString(OUTING_ID_ARG).orEmpty()
             val viewModel: JoinedOutingViewModel = hiltViewModel()
             val uiState by viewModel.uiState.collectAsState()
             JoinedOutingScreen(
                 uiState = uiState,
                 onBackClick = { navController.popBackStack() },
                 onMoreOptionsClick = {},
-                onHeadingHomeClick = { navController.navigate(ARRIVAL_CONFIRMATION_ROUTE) },
+                onHeadingHomeClick = { navController.navigate("$ARRIVAL_CONFIRMATION_ROUTE/$outingId") },
                 onLeaveOutingConfirmed = {
                     navController.navigate(TopLevelDestination.HOME.route) {
                         popUpTo(TopLevelDestination.HOME.route) { inclusive = false }
@@ -255,8 +258,14 @@ fun HomeSafeNavHost(
                 }
             )
         }
-        composable(ARRIVAL_CONFIRMATION_ROUTE) {
+        composable(
+            route = "$ARRIVAL_CONFIRMATION_ROUTE/{$OUTING_ID_ARG}",
+            arguments = listOf(navArgument(OUTING_ID_ARG) { type = NavType.StringType })
+        ) {
+            val viewModel: ArrivalConfirmationViewModel = hiltViewModel()
+            val uiState by viewModel.uiState.collectAsState()
             ArrivalConfirmationScreen(
+                uiState = uiState,
                 onCloseClick = {
                     navController.navigate(TopLevelDestination.HOME.route) {
                         popUpTo(TopLevelDestination.HOME.route) { inclusive = false }

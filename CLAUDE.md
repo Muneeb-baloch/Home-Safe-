@@ -157,10 +157,10 @@ The UI-only phase is done. We are now wiring up the real outing/arrival loop, st
 Full milestone plan (see `/Users/muneebbaloch/.claude/plans/tell-me-ffrom-where-immutable-moth.md` for complete file-level detail):
 
 - [x] **M1 — Foundational plumbing.** Hilt DI, domain models (`JourneyStatus`, `OutingStatus`, `User`, `Outing`, `Journey`, `TrustedContact`), stub identity (`UserIdentityProvider` + DataStore), Firestore repositories (`UserRepository`, `OutingRepository`, `JourneyRepository`), `ProfileViewModel` wired to real `users/{uid}.name`.
-- [ ] **M2 — Start Outing.** Real Firestore writes (`outings/{id}`, `journeys/{id}`) from `StartOutingScreen`; `ActiveOutingScreen` goes live via snapshot listeners.
-- [ ] **M3 — Join by code.** Real lookup-by-code + join flow (`EnterOutingCodeScreen`, `JoinConfirmationScreen`); `JoinedOutingScreen` goes live.
-- [ ] **M4 — Manual arrival → Cloudflare Worker → FCM → client receives it.** `ArrivalConfirmationScreen` writes `ARRIVED` + calls the Worker; `HomeSafeMessagingService` handles FCM token/receive; `AlertsScreen` goes live; Worker project at `worker/` resolves companions, sends FCM, writes `notifications/{id}`.
-- [ ] **M5 — Minimal Firestore security rules.** Field-shape allowlist (reject any `lat`/`lng`/`location` field on `journeys`/`outings`), `notifications` writes rejected from clients (Worker's service account bypasses rules).
+- [x] **M2 — Start Outing.** Real Firestore writes (`outings/{id}`, `journeys/{id}`) from `StartOutingScreen`; `ActiveOutingScreen` goes live via snapshot listeners.
+- [x] **M3 — Join by code.** Real lookup-by-code + join flow (`EnterOutingCodeScreen`, `JoinConfirmationScreen`); `JoinedOutingScreen` goes live.
+- [x] **M4 — Manual arrival → Cloudflare Worker → FCM → client receives it.** `ArrivalConfirmationScreen` writes `ARRIVED` + calls the Worker; `HomeSafeMessagingService` handles FCM token/receive; `AlertsScreen` goes live; Worker project at `worker/` resolves companions, sends FCM, writes `notifications/{id}`.
+- [x] **M5 — Minimal Firestore security rules.** Field-shape allowlist (reject any `lat`/`lng`/`location` field on `journeys`/`outings`), `notifications` writes rejected from clients (Worker's service account bypasses rules).
 
 ## Original priority order (for after this pass)
 

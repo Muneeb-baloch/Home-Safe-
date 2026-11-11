@@ -41,20 +41,15 @@ import com.muneeb.homesafe.ui.components.HomeSafeScreen
 import com.muneeb.homesafe.ui.components.HomeSafeTextButton
 import com.muneeb.homesafe.ui.components.SectionCard
 
-private data class NotifiedCompanion(val initial: String, val name: String)
-
 @Composable
 fun ArrivalConfirmationScreen(
+    uiState: ArrivalConfirmationUiState,
     onCloseClick: () -> Unit,
     onDoneClick: () -> Unit,
     onViewJourneyClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val notifiedCompanions = listOf(
-        NotifiedCompanion("A", "Ahmed"),
-        NotifiedCompanion("A", "Ali"),
-        NotifiedCompanion("H", "Hamza")
-    )
+    val notifiedCompanions = uiState.companions
 
     HomeSafeScreen(
         modifier = modifier,
@@ -110,7 +105,7 @@ fun ArrivalConfirmationScreen(
                     color = Ink
                 )
                 Text(
-                    text = stringResource(R.string.arrival_subtitle_format, "11:42 PM", "Friday Night Out"),
+                    text = stringResource(R.string.arrival_subtitle_format, uiState.arrivedAtLabel, uiState.outingCode),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Normal,
                     color = Subtle,
@@ -135,7 +130,7 @@ fun ArrivalConfirmationScreen(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
-                            Avatar(initial = companion.initial, size = 32.dp, fontSize = 13.sp)
+                            Avatar(initial = companion.name.take(1).uppercase(), size = 32.dp, fontSize = 13.sp)
                             Text(
                                 text = companion.name,
                                 fontSize = 14.sp,
@@ -143,19 +138,28 @@ fun ArrivalConfirmationScreen(
                                 color = Ink,
                                 modifier = Modifier.weight(1f)
                             )
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_check),
-                                    contentDescription = null,
-                                    tint = DeepTeal,
-                                    modifier = Modifier.size(13.dp)
-                                )
+                            if (companion.delivered) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.ic_check),
+                                        contentDescription = null,
+                                        tint = DeepTeal,
+                                        modifier = Modifier.size(13.dp)
+                                    )
+                                    Text(
+                                        text = stringResource(R.string.arrival_delivered_label),
+                                        fontSize = 12.sp,
+                                        fontWeight = FontWeight.Medium,
+                                        color = DeepTeal,
+                                        modifier = Modifier.padding(start = 4.dp)
+                                    )
+                                }
+                            } else {
                                 Text(
-                                    text = stringResource(R.string.arrival_delivered_label),
+                                    text = stringResource(R.string.arrival_sending_label),
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight.Medium,
-                                    color = DeepTeal,
-                                    modifier = Modifier.padding(start = 4.dp)
+                                    color = Subtle
                                 )
                             }
                         }
@@ -201,6 +205,15 @@ private fun ArrivalCheckBadge(modifier: Modifier = Modifier) {
 private fun ArrivalConfirmationScreenPreview() {
     HomeSafeTheme {
         ArrivalConfirmationScreen(
+            uiState = ArrivalConfirmationUiState(
+                outingCode = "7K4P",
+                arrivedAtLabel = "11:42 PM",
+                companions = listOf(
+                    NotifiedCompanionUi(uid = "1", name = "Ahmed", delivered = true),
+                    NotifiedCompanionUi(uid = "2", name = "Ali", delivered = true),
+                    NotifiedCompanionUi(uid = "3", name = "Hamza", delivered = false)
+                )
+            ),
             onCloseClick = {},
             onDoneClick = {},
             onViewJourneyClick = {}
