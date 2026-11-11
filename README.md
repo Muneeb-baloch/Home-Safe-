@@ -12,7 +12,83 @@ HomeSafe automatically lets your friends and family know when you've safely reac
 
 ## Screens
 
-<p align="center"><img src="docs/screens-row.png" alt="HomeSafe app screens" width="100%"></p>
+Real screenshots from the running app (emulator, debug build).
+
+### First run & setup
+
+<table>
+<tr>
+<td align="center"><img src="docs/screenshots/01_splash.png" width="200"><br><sub>Splash</sub></td>
+<td align="center"><img src="docs/screenshots/03_setup_background_location.png" width="200"><br><sub>Setup — background location</sub></td>
+<td align="center"><img src="docs/screenshots/04_setup_notifications.png" width="200"><br><sub>Setup — notifications</sub></td>
+<td align="center"><img src="docs/screenshots/05_setup_home_location.png" width="200"><br><sub>Setup — set home</sub></td>
+</tr>
+</table>
+
+### Home & alerts
+
+<table>
+<tr>
+<td align="center"><img src="docs/screenshots/06_home.png" width="200"><br><sub>Home</sub></td>
+<td align="center"><img src="docs/screenshots/07_alerts.png" width="200"><br><sub>Alerts</sub></td>
+</tr>
+</table>
+
+### Starting an outing
+
+<table>
+<tr>
+<td align="center"><img src="docs/screenshots/08_start_outing.png" width="200"><br><sub>Start an outing</sub></td>
+<td align="center"><img src="docs/screenshots/09_add_trusted_contact.png" width="200"><br><sub>Add trusted contact</sub></td>
+<td align="center"><img src="docs/screenshots/10_active_outing.png" width="200"><br><sub>Active outing</sub></td>
+</tr>
+</table>
+
+### Joining an outing
+
+<table>
+<tr>
+<td align="center"><img src="docs/screenshots/11_scan_qr.png" width="200"><br><sub>Scan QR</sub></td>
+<td align="center"><img src="docs/screenshots/12_enter_outing_code.png" width="200"><br><sub>Enter outing code</sub></td>
+<td align="center"><img src="docs/screenshots/13_join_confirmation.png" width="200"><br><sub>Join confirmation</sub></td>
+<td align="center"><img src="docs/screenshots/14_joined_outing.png" width="200"><br><sub>Joined outing</sub></td>
+</tr>
+</table>
+
+### Arrival
+
+<table>
+<tr>
+<td align="center"><img src="docs/screenshots/15_arrival_confirmation.png" width="200"><br><sub>Arrival confirmation</sub></td>
+</tr>
+</table>
+
+### Journeys
+
+<table>
+<tr>
+<td align="center"><img src="docs/screenshots/16_journeys.png" width="200"><br><sub>Journeys</sub></td>
+<td align="center"><img src="docs/screenshots/17_journey_details.png" width="200"><br><sub>Journey details</sub></td>
+</tr>
+</table>
+
+### Companions
+
+<table>
+<tr>
+<td align="center"><img src="docs/screenshots/18_companions.png" width="200"><br><sub>Companions</sub></td>
+<td align="center"><img src="docs/screenshots/19_contact_details.png" width="200"><br><sub>Contact details</sub></td>
+</tr>
+</table>
+
+### Profile
+
+<table>
+<tr>
+<td align="center"><img src="docs/screenshots/20_profile.png" width="200"><br><sub>Profile</sub></td>
+<td align="center"><img src="docs/screenshots/21_edit_profile.png" width="200"><br><sub>Edit profile</sub></td>
+</tr>
+</table>
 
 ## How it works
 
@@ -49,20 +125,6 @@ HomeSafe shares arrival status and time only — for example, "Muneeb reached ho
 - Cloud Functions
 - Geofencing (Google Play Services)
 - WorkManager
-
-## Project status
-
-UI phase — screens and navigation are being built. Business logic (location, Firebase, notifications) comes next.
-
-## Roadmap
-
-- [x] Design
-- [ ] UI screens
-- [ ] Home location + geofence
-- [ ] Outings (create/join)
-- [ ] Arrival notifications
-- [ ] Trusted contacts
-- [ ] Expected arrival / late alerts
 
 ## Getting started
 
